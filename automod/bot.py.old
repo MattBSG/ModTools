@@ -26,7 +26,7 @@ from automod.utils import load_json, write_json, load_file, write_file, compare_
 
 from .exceptions import CommandError
 from .constants import BOT_HANDLER_ROLE, RHINO_SERVER, RHINO_SERVER_CHANNEL, DOCUMENTATION_FOR_BOT, TWITCH_EMOTES, \
-    RHINO_PATREON, SHITTY_BOT_IDS, RHINO_STREAMTIP, BTTV_EMOTES, \
+    RHINO_PATREON, SHITTY_BOT_IDS, CARBON_POST_URL, CARBON_POST_KEY, RHINO_STREAMTIP, BTTV_EMOTES, \
     OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SHITTY_BAN_LIST
 
 
@@ -2053,7 +2053,7 @@ class AutoMod(discord.Client):
         Replies with the link to the commands page!
         """
         if await self.has_roles(message.channel, author, server, command='help'):
-            return Response('I am a moderator bot made by SexualRhinoceros and modified by MattBSG. You can view my commands here: <https://github.com/SexualRhinoceros/ModTools/wiki/Command-List>', reply=True)
+            return Response('<https://github.com/SexualRhinoceros/ModTools/wiki/Command-List>', reply=True)
 
     async def cmd_cls(self, message, author, server, channel):
         """
@@ -2078,7 +2078,7 @@ class AutoMod(discord.Client):
         Sends a whole buncha info pertaining to the bot to the chat!
         """
         return Response(
-                'I was coded by SexualRhinoceros and modified by MattBSG. I am currently on v{} ! \nFor documentation on my commands or info on how to get my in your'
+                'I was coded by SexualRhinoceros and am currently on v{} ! \nFor documentation on my commands or info on how to get my in your'
                 ' server, check out this link! {}'.format(VERSION, DOCUMENTATION_FOR_BOT), reply=True)
 
     async def cmd_donate(self, message, author, server):
@@ -2086,7 +2086,7 @@ class AutoMod(discord.Client):
         Usage: {command_prefix}donate
         Sends a whole buncha info pertaining to rhino's patreon to the chat!
         """
-        return Response('Thanks for considering donating! If you want to support SexualRhinoceros monthly, check out his'
+        return Response('Thanks for considering donating! If you want to support me monthly, check out my'
                         ' Patreon here\n\t{}\nor for one time, you can find my paypal here\n\t{}'
                         ''.format(RHINO_PATREON, RHINO_STREAMTIP),
                         reply=True)
@@ -2383,6 +2383,8 @@ class AutoMod(discord.Client):
                     'I have been running continuously for **{}**!\nI\'m currently in **{}** servers and can see '
                     '**{}** members in those servers.\n\nSince starting, I have seen **{}** messages, automatically taken **{}** moderation'
                     ' actions, sent **{}** messages, deleted **{}** messages, have had **{}** commands ran, and seen @\u200beveryone used **{}** times!'
+                    '\n\n To get me on your server, PM me an invite link or go to **https://www.carbonitex.net/'
+                    'discord/bots?rhino**'
                     ''.format(strfdelta(info_dict['starttime']), info_dict['servers'], info_dict['members'],
                               info_dict['messagesprocessed'], info_dict['actionstaken'],
                               info_dict['messagesdeleted'], info_dict['messagessent'], info_dict['commandsran'],
@@ -2446,7 +2448,7 @@ class AutoMod(discord.Client):
         blahblahblah
         """
         return Response('Here is my OAuth URL!:\n{}'
-                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
+                        ''.format(discord.utils.oauth_url('170242612425392128', permissions=discord.Permissions.all())),
                         reply=True)
 
     async def cmd_joinserver(self):
@@ -2455,7 +2457,7 @@ class AutoMod(discord.Client):
         Asks the bot to join a server.
         """
         return Response('I no longer use invites! If you wish to invite me to a server, please use this link:\n{}'
-                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
+                        ''.format(discord.utils.oauth_url('170242612425392128', permissions=discord.Permissions.all())),
                         reply=True)
 
     async def on_server_join(self, server):
@@ -2616,7 +2618,7 @@ class AutoMod(discord.Client):
             else:
                 await self.safe_send_message(message.author, 'You cannot use this bot in private messages. If you wish '
                                                              'to invite me to a server, please use this link:\n%s'
-                                             % discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all()))
+                                             % discord.utils.oauth_url('170242612425392128', permissions=discord.Permissions.all()))
                 self.pmlist.append(message.author.id)
             return
 
