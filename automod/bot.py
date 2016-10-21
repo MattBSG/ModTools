@@ -1697,23 +1697,23 @@ class AutoMod(discord.Client):
             else:
                 await self.safe_send_message(author, msg)
 
-    async def cmd_alertrhino(self, message, author, server, string_arg):
-        """
-        Usage: {command_prefix}alertrhino ["message"]
-        Used to send a message to SexualRhinoceros if the bot isn't working for one reason or another!
-        """
-        if await self.has_roles(message.channel, author, server, command='alertrhino'):
-            inv = await self.create_invite(server, max_uses=3)
-            print('Alert Command on Server: {}'.format(server.name))
-            for servers in self.servers:
-                if servers.id == RHINO_SERVER:
-                    for channel in servers.channels:
-                        if channel.id == RHINO_SERVER_CHANNEL:
-                            await self.safe_send_message(channel,
-                                                         'Help requested by **{}** at *{}({})* for reason `{}`\n\t{}'
-                                                         ''.format(author.name, server.name, server.id, string_arg,
-                                                                   inv))
-                            return Response('Rhino has been alerted!', reply=True)
+#    async def cmd_alertrhino(self, message, author, server, string_arg):
+#        """
+#        Usage: {command_prefix}alertrhino ["message"]
+#        Used to send a message to SexualRhinoceros if the bot isn't working for one reason or another!
+#        """
+#        if await self.has_roles(message.channel, author, server, command='alertrhino'):
+#            inv = await self.create_invite(server, max_uses=3)
+#            print('Alert Command on Server: {}'.format(server.name))
+#            for servers in self.servers:
+#                if servers.id == RHINO_SERVER:
+#                    for channel in servers.channels:
+#                        if channel.id == RHINO_SERVER_CHANNEL:
+#                            await self.safe_send_message(channel,
+#                                                         'Help requested by **{}** at *{}({})* for reason `{}`\n\t{}'
+#                                                         ''.format(author.name, server.name, server.id, string_arg,
+#                                                                   inv))
+#                            return Response('Rhino has been alerted!', reply=True)
 
     async def cmd_nick(self, message, author, server, nickname, reason=None):
         """
@@ -1803,37 +1803,9 @@ class AutoMod(discord.Client):
         """
         if await self.has_roles(message.channel, author, server, command='ping'):
             if author.id == '94408525366697984':
-                return Response(':banana:!', reply=True)
-            elif author.id == '103057791312203776':
-                return Response('Pew Pew! The Cavalry\'s Here!', reply=True)
-            elif author.id == '91910066407481344':
-                return Response('o/ ^^', reply=True)
-            elif author.id == '68934448753676288':
-                return Response('PONG! To the coolest guy ever!', reply=True)
-            elif author.id == '90302230506258432':
-                return Response('HAMMERDOWN!!', reply=True)
-            elif author.id == '111281541090422784':
-                return Response('👌🏽( ͡° ͜ ▴ ͡°👌🏽)', reply=True)
-            elif author.id == '116662052847747072':
-                return Response('I live!', reply=True)
-            elif author.id == '112535542876377088':
-                return Response('meow', reply=True)
-            elif author.id == '87737926150033408':
-                return Response('hue', reply=True)
-            elif author.id == '146613143592894464':
-                return Response('tar -zxvf PONG.tar.gz', reply=True)
-            elif author.id == '109032564840226816':
-                return Response('ONWARDS AOSHIMA!', reply=True)
-            elif author.id == '81857014405271552':
-                return Response('BRRRING', reply=True)
-            elif author.id == '106391128718245888':
-                return Response('Let\'s break it DOWN!', reply=True)
+                return Response('Hi Dad! :middle_finger:', reply=True)
             elif author.id == '141989359254503425':
-                return Response('Merhaba, @PikaDru™#8209! Adım RH1-N0.', reply=True)
-            elif author.id == '124692511871598592':
-                emoji1 = str(discord.utils.get(self.get_all_emojis(), id='213244178971230208'))
-                emoji2 = str(discord.utils.get(self.get_all_emojis(), id='213244196155293696'))
-                return Response('ayy bot aliev, {} >>> {}'.format(emoji1, emoji2), reply=True)
+                return Response('Merhaba! Adım AutoMod. I am working and operational!', reply=True)
             else:
                 return Response('PONG!', reply=True)
 
@@ -2053,7 +2025,8 @@ class AutoMod(discord.Client):
         Replies with the link to the commands page!
         """
         if await self.has_roles(message.channel, author, server, command='help'):
-            return Response('I am a moderator bot made by SexualRhinoceros and modified by MattBSG. You can view my commands here: <https://github.com/SexualRhinoceros/ModTools/wiki/Command-List>', reply=True)
+            return Response(
+			'Here is a link to my wiki: <https://github.com/Just-Some-Bots/ModTools/wiki/Command-List>', reply=True)
 
     async def cmd_cls(self, message, author, server, channel):
         """
@@ -2081,15 +2054,15 @@ class AutoMod(discord.Client):
                 'I was coded by SexualRhinoceros and modified by MattBSG. I am currently on v{} ! \nFor documentation on my commands or info on how to get my in your'
                 ' server, check out this link! {}'.format(VERSION, DOCUMENTATION_FOR_BOT), reply=True)
 
-    async def cmd_donate(self, message, author, server):
-        """
-        Usage: {command_prefix}donate
-        Sends a whole buncha info pertaining to rhino's patreon to the chat!
-        """
-        return Response('Thanks for considering donating! If you want to support SexualRhinoceros monthly, check out his'
-                        ' Patreon here\n\t{}\nor for one time, you can find my paypal here\n\t{}'
-                        ''.format(RHINO_PATREON, RHINO_STREAMTIP),
-                        reply=True)
+#    async def cmd_donate(self, message, author, server):
+#        """
+#        Usage: {command_prefix}donate
+#        Sends a whole buncha info pertaining to rhino's patreon to the chat!
+#        """
+#        return Response('Thanks for considering donating! If you want to support me monthly, check out my'
+#                        ' Patreon here\n\t{}\nor for one time, you can find my paypal here\n\t{}'
+#                        ''.format(RHINO_PATREON, RHINO_STREAMTIP),
+#                        reply=True)
 
     async def cmd_ignore(self, message, author, server, option, new_id, reason=None):
         """
@@ -2181,7 +2154,7 @@ class AutoMod(discord.Client):
         Usage: {command_prefix}ping
         Replies with "PONG!"; Use to test bot's responsiveness
         """
-        if author.id in [self.config.master_id, '98295630480314368', '134122930828214273']:
+        if author.id in [self.config.master_id]:
             user = None
             if mentions:
                 user = mentions[0]
@@ -2214,7 +2187,7 @@ class AutoMod(discord.Client):
                 return Response('🖕 bad input you ass', reply=True)
             if option in ['+', 'true']:
                 await self.change_status(game=discord.Game(name=string_game,
-                                                           url='https://www.twitch.tv/s3xualrhinoceros',
+                                                           url='https://www.twitch.tv/mattbsg',
                                                            type=1))
             else:
                 await self.change_status(game=discord.Game(name=string_game))
@@ -2305,7 +2278,7 @@ class AutoMod(discord.Client):
         Force the bot to lurk in a server rather than send shit to it or leave
         after the time is up
         """
-        if author.id in [self.config.master_id, '98295630480314368', '134122930828214273']:
+        if author.id in [self.config.master_id]:
             self.server_index[server.id] = ['LURK', 'LURK', 'LURK', 'LURK', 'LURK', 'LURK', 'LURK', 'LURK',
                                             'LURK', 'LURK', 'LURK', 'LURK', 'LURK', 'LURK', 'LURK', 'LURK', 'LURK']
             return Response(':thumbsup:', reply=True)
@@ -2317,7 +2290,7 @@ class AutoMod(discord.Client):
         Force the bot to lurk in a server rather than send shit to it or leave
         after the time is up
         """
-        if author.id in [self.config.master_id, '98295630480314368', '134122930828214273']:
+        if author.id in [self.config.master_id]:
             try:
                 if discord.utils.get(self.servers, name=key):
                     await self.leave_server(discord.utils.get(self.servers, name=key))
@@ -2339,7 +2312,7 @@ class AutoMod(discord.Client):
         Force the bot to lurk in a server rather than send shit to it or leave
         after the time is up
         """
-        if author.id in [self.config.master_id, '98295630480314368', '134122930828214273']:
+        if author.id in [self.config.master_id]:
             if not leftover_args:
                 raise CommandError('ERROR: You didn\'t fucking specify a reason you fuck stick\n'
                                    '[!!globalban <id> <reason>] NO FUCKING QUOTES NEEDED BRUH')
@@ -2358,9 +2331,9 @@ class AutoMod(discord.Client):
 
     async def cmd_stats(self, author, channel, server, id=None):
         """
-        Usage: {command_prefix}lurk
-        Force the bot to lurk in a server rather than send shit to it or leave
-        after the time is up
+        Usage: {command_prefix}stats
+        Reply to the message author the stats of the current
+        bot uptime session
         """
         if await self.has_roles(channel, author, server, command='stats'):
             info_dict = {
@@ -2413,7 +2386,7 @@ class AutoMod(discord.Client):
         Usage: {command_prefix}forcebackup
         Forces a back up of all server configs
         """
-        if author.id in [self.config.master_id, '98295630480314368', '134122930828214273']:
+        if author.id in [self.config.master_id]:
             await self.safe_send_message(discord.Object(id='155553608400764928'),
                                          '__**<@{}>**__ restarting in *{}* on `{}`'.format(author.id,
                                                                                            channel.name,
@@ -2434,8 +2407,8 @@ class AutoMod(discord.Client):
             for server in self.servers:
                 if server.id not in self.server_index:
                     await self.safe_send_message(server,
-                                                 'Hello! Just a reminder from your friendly robo-Moderator that I don\'t have any function'
-                                                 ' until someone goes through the registration process with me!\nIf a Moderator with the `{}` permission'
+                                                 'Hello! Just a friendly reminder that I can not work until someone goes through'
+                                                 ' the registration process with me!\nIf a Moderator with the `{}` permission'
                                                  ' would run the command `{}register`, I can start helping keep things clean!'.format(
                                                          BOT_HANDLER_ROLE, self.config.command_prefix))
             return Response(':thumbsup:', reply=True)
@@ -2454,7 +2427,7 @@ class AutoMod(discord.Client):
         Usage {command_prefix}joinserver [Server Link]
         Asks the bot to join a server.
         """
-        return Response('I no longer use invites! If you wish to invite me to a server, please use this link:\n{}'
+        return Response('I am quite happy you would like me to join one of your servers! Just remember that to function properly, I must have **administrator** permissions. Here is my invite link:\n{}'
                         ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
                         reply=True)
 
