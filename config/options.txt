@@ -1,8 +1,8 @@
 [Credentials]
-Token = MjM3NzYwODY3OTY4NjE0NDAy.CumC3A.N-NHo81WRepjwtiy7crEt-FWbvs
+Token = YOURBOTTOKEN
 
 [Permissions]
-OwnerID = 125233822760566784
+OwnerID = YOURUSERID
 
 [Chat]
 CommandPrefix = !!
