@@ -711,7 +711,7 @@ class AutoMod(discord.Client):
                 if not self.server_index[server.id][10][1]:
                     return
                 await self.safe_send_message(discord.Object(id=config[9]),
-                                             '`[{}]` 🚫 **USER ID** *{}* ** WAS AUTOMATICALL BANNED FROM THE SERVE'
+                                             '`[{}]` 🚫 **USER ID** *{}* ** WAS AUTOMATICALL BANNED FROM THE SERVER'
                                              'R** 🚫\n\t**REASON:** `{}'.format(datetime.utcnow().strftime("%H:%M:%S"),
                                                                                 banned_id,
                                                                                 reason),
@@ -2026,7 +2026,7 @@ class AutoMod(discord.Client):
         """
         if await self.has_roles(message.channel, author, server, command='help'):
             return Response(
-			'Here is a link to my wiki: <https://github.com/Just-Some-Bots/ModTools/wiki/Command-List>', reply=True)
+			'Here is a link to my wiki: <https://github.com/MattBSG/ModTools/wiki/Command-List>', reply=True)
 
     async def cmd_cls(self, message, author, server, channel):
         """
@@ -2381,19 +2381,19 @@ class AutoMod(discord.Client):
             return Response(':thumbsup:', reply=True)
         return
 
-    async def cmd_restart(self, channel, author, server):
+    async def cmd_shutdown(self, channel, author, server):
         """
         Usage: {command_prefix}forcebackup
         Forces a back up of all server configs
         """
         if author.id in [self.config.master_id]:
             await self.safe_send_message(discord.Object(id='155553608400764928'),
-                                         '__**<@{}>**__ restarting in *{}* on `{}`'.format(author.id,
+                                         '__**<@{}>**__ shutdown made in *{}* on `{}`'.format(author.id,
                                                                                            channel.name,
                                                                                            server.name
                                                                                            )
                                          )
-            await self.safe_send_message(channel, '**Restarting...**')
+            await self.safe_send_message(channel, '**Shutting down...**')
             await self.backup_config(self.server_index)
             await self.logout()
         return
