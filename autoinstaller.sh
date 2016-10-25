@@ -52,7 +52,7 @@ clear
 echo Last but not least, we need to know what you want to use for the command prefix
 echo      For example: In !!help !! is the command prefix
 echo
-echo Please enter what you would like for your command prefix ("!!" is the default):
+echo Please enter what you would like for your command prefix \(\"!!\" is the default\):
 read prefix
 echo Got it. $prefix will be your command prefix.
 sleep 3
@@ -78,7 +78,7 @@ echo Your ID = \"$ownerid\"
 echo Command Prefix = \"$prefix\"
 echo
 echo
-echo Configuration complete!If there is any incorrect information entered, you will need to manually edit it in either automod/constants.py or config/configs.txt
+echo Configuration complete! If there is any incorrect information entered, you will need to manually edit it in either automod/constants.py or config/configs.txt
 echo
 echo      You can start your bot by running \"python3.5 run.py\"
 echo For more information refer to the wiki.
