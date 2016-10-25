@@ -22,8 +22,6 @@ echo
 echo
 echo Enter the userid of your bot account \(ie. 237760867968614402\):
 read botid
-echo "
-BOT_USER_ACCOUNT = $botid" | cat - >> ~/ModTools/automod/constants.py
 echo Got it. $botid is the user id for your bot account. Moving on.
 sleep 3
 clear
@@ -61,7 +59,7 @@ clear
 echo "
 BOT_USER_ACCOUNT = $botid" | cat - >> ~/ModTools/automod/constants.py
 echo "[Credentials]
-Token = $token
+Token = $bottoken
 
 [Permissions]
 OwnerID = $ownerid
