@@ -32,3 +32,9 @@ cd ~
 rm -rfv installation-files
 
 echo !Installation completed!
+echo .
+echo .
+echo .
+echo .
+echo Starting configuration....
+sleep 3

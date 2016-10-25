@@ -26,7 +26,7 @@ from automod.utils import load_json, write_json, load_file, write_file, compare_
 
 from .exceptions import CommandError
 from .constants import BOT_HANDLER_ROLE, RHINO_SERVER, RHINO_SERVER_CHANNEL, DOCUMENTATION_FOR_BOT, TWITCH_EMOTES, \
-    RHINO_PATREON, SHITTY_BOT_IDS, RHINO_STREAMTIP, BTTV_EMOTES, \
+    RHINO_PATREON, BOT_USER_ACCOUNT, SHITTY_BOT_IDS, RHINO_STREAMTIP, BTTV_EMOTES, \
     OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SHITTY_BAN_LIST
 
 
@@ -2419,7 +2419,7 @@ class AutoMod(discord.Client):
         blahblahblah
         """
         return Response('Here is my OAuth URL!:\n{}'
-                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
+                        ''.format(discord.utils.oauth_url( BOT_USER_ACCOUNT, permissions=discord.Permissions.all())),
                         reply=True)
 
     async def cmd_joinserver(self):
@@ -2428,7 +2428,7 @@ class AutoMod(discord.Client):
         Asks the bot to join a server.
         """
         return Response('I am quite happy you would like me to join one of your servers! Just remember that to function properly, I must have **administrator** permissions. Here is my invite link:\n{}'
-                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
+                        ''.format(discord.utils.oauth_url( BOT_USER_ACCOUNT, permissions=discord.Permissions.all())),
                         reply=True)
 
     async def on_server_join(self, server):
@@ -2589,7 +2589,7 @@ class AutoMod(discord.Client):
             else:
                 await self.safe_send_message(message.author, 'You cannot use this bot in private messages. If you wish '
                                                              'to invite me to a server, please use this link:\n%s'
-                                             % discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all()))
+                                             % discord.utils.oauth_url( BOT_USER_ACCOUNT, permissions=discord.Permissions.all()))
                 self.pmlist.append(message.author.id)
             return
 
