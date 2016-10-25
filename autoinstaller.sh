@@ -23,16 +23,16 @@ echo
 echo Enter the userid of your bot account \(ie. 237760867968614402\):
 read botid
 echo Got it. $botid is the user id for your bot account. Moving on.
-sleep 3
+sleep 4
 clear
 
 echo On the same page as you got your userid you should see a field that says "Token".
-echo      Click the "Click to reveal" button, then copy and paste the ENTIRE thing at the next prompt.
+echo      Click the "Click to reveal" button, then copy and paste the ENTIRE string at the next prompt.
 echo 
 echo Enter the token of your bot account:
 read bottoken
 echo Got it. $bottoken is the token for your bot account. Moving on.
-sleep 3
+sleep 4
 clear
 
 echo Now we need to get your userid.
@@ -44,7 +44,7 @@ echo
 echo Please enter YOUR userid:
 read ownerid
 echo Got it. $ownerid is the user id to be set as bot owner. Moving on.
-sleep 3
+sleep 4
 clear
 
 echo Last but not least, we need to know what you want to use for the command prefix
@@ -53,9 +53,9 @@ echo
 echo Please enter what you would like for your command prefix \(\"!!\" is the default\):
 read prefix
 echo Got it. $prefix will be your command prefix.
-sleep 3
+sleep 4
 clear
-
+echo Starting save of config files....
 echo "
 BOT_USER_ACCOUNT = $botid" | cat - >> ~/ModTools/automod/constants.py
 echo "[Credentials]
@@ -66,7 +66,9 @@ OwnerID = $ownerid
 
 [Chat]
 CommandPrefix = $prefix" | cat - >> ~/ModTools/config/options.txt
-
+echo Done.
+sleep 2
+clear
 echo Awesome! You finished configuration of the bot. Lets verify that all the information you entered is correct.
 echo      Here are the options you set \(inside quotation marks\):
 echo
