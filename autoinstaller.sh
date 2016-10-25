@@ -13,12 +13,14 @@ done
 
 clear
 echo Ok, our dependancies should have been installed. Lets continue to configuration. We\'ll confirm your options later on
+echo
 echo      Go to https://github.com/MattBSG/ModTools/wiki/Manual-Installation-Instructions#setting-up-the-bot-config
 echo
-echo Follow the instructions to create an application and bot account. Then enter the accounts USER ID in the following prompt.
-echo Make sure it is the CORRECT user id or ModTools will give the wrong invite link!
 echo
-echo Enter the userid of your bot account (ie. 237760867968614402):
+echo Follow the instructions to create an application and bot account. Then enter the accounts USER ID in the following prompt. Make sure it is the CORRECT user id or ModTools will give the wrong invite link!
+echo
+echo
+echo Enter the userid of your bot account \(ie. 237760867968614402\):
 read botid
 echo "
 BOT_USER_ACCOUNT = $botid" | cat - >> ~/ModTools/automod/constants.py
@@ -37,7 +39,7 @@ clear
 
 echo Now we need to get your userid.
 echo      Find it by mentioning your self with a backslash before.
-echo      For example: \@DamFam#1234 will read something like <@66516516512568135>
+echo      For example: \\@DamFam#1234 will read something like \<@66516516512568135\>
 echo
 echo      You would enter "66516516512568135" without quotes. This will be set as the bot\'s ownerid
 echo
@@ -68,31 +70,15 @@ OwnerID = $ownerid
 CommandPrefix = $prefix" | cat - >> ~/ModTools/config/options.txt
 
 echo Awesome! You finished configuration of the bot. Lets verify that all the information you entered is correct.
-echo      Here are the options you set (inside quotation marks):
+echo      Here are the options you set \(inside quotation marks\):
 echo
-echo Bot User ID = "$botid"
-echo Bot Token = "$token"
-echo Your ID = "$ownerid"
-echo Command Prefix = "$prefix"
+echo Bot User ID = \"$botid\"
+echo Bot Token = \"$bottoken\"
+echo Your ID = \"$ownerid\"
+echo Command Prefix = \"$prefix\"
 echo
 echo
-echo Is this information correct?
-while true; do
-    read -p "[y/n]: " yn
-    case $yn in
-        [Yy]* ) status = 1; break;;
-        [Nn]* ) status = 2; exit;;
-        * ) echo "Invalid selection. Please answer y for yes or n for no.";;
-    esac
-done
-if [ $status -e 1 ]; then
-	clear
-	echo Configuration complete. View the manual installation instructions on the wiki for information on changing the configs manually
-elif [ $status -e 2 ]; then
-	echo
-	echo
-	echo
-	echo Ok, please follow these instructions to change your configuration to be correct.
-	echo      If your "Bot User ID" is incorrect, navigate to: ~/ModTools/automod/constants.py and go to the bottom. Change the ID to be correct.
-	echo
-	echo      If your "Owner ID", "Token", or "Command Prefix" are incorrect, goto ~/ModTools/config/options.txt and edit the required actions
+echo Configuration complete!If there is any incorrect information entered, you will need to manually edit it in either automod/constants.py or config/configs.txt
+echo
+echo      You can start your bot by running \"python3.5 run.py\"
+echo For more information refer to the wiki.
