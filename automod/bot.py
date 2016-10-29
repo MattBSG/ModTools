@@ -711,8 +711,8 @@ class AutoMod(discord.Client):
                 if not self.server_index[server.id][10][1]:
                     return
                 await self.safe_send_message(discord.Object(id=config[9]),
-                                             '`[{}]` 🚫 **USER ID** *{}* ** WAS AUTOMATICALL BANNED FROM THE SERVER'
-                                             'R** 🚫\n\t**REASON:** `{}'.format(datetime.utcnow().strftime("%H:%M:%S"),
+                                             '`[{}]` 🚫 **USER ID** *{}* ** WAS AUTOMATICALLY BANNED FROM THE SERVER DUE TO A GLOBAL BAN'
+                                             '** 🚫\n\t**REASON:** {}'.format(datetime.utcnow().strftime("%H:%M:%S"),
                                                                                 banned_id,
                                                                                 reason),
                                              server=server)
