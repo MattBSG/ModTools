@@ -1,6 +1,5 @@
-chmod +x install.sh
 echo -e "This script will install ModTools in your home directory for your user \n \n \n \n \n \nThis action will use about 100mb of storage. Would you like to continue?"
-
+# prompt user if they want to install the bot or not
 while true; do
     read -p "[y/n]: " yn
     case $yn in
@@ -10,16 +9,17 @@ while true; do
     esac
 done
 
-
+# Adding repos that have dependancies that we need to download
 sudo add-apt-repository ppa:fkrull/deadsnakes -y
 sudo add-apt-repository ppa:mc3man/trusty-media -y
 apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 
 echo 
 echo Installing python and its modules....
 sleep 1
 
+# Working out of the users home directory to make things easier to find
 mkdir ~/installation-files
 cd ~/installation-files
 sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
@@ -41,6 +41,8 @@ cd python-slugify
 unzip master -d archive-files
 cd archive-files/un33k-python-slugify-f2ab4b7
 python3.5 setup.py install
+
+# cleanup and start the configuration process
 cd ~
 rm -rfv installation-files
 
@@ -97,6 +99,8 @@ read prefix
 echo Got it. $prefix will be your command prefix.
 sleep 4
 clear
+
+# Inserting information from the user inputs above to their nessecary locations to make the bot work
 echo Starting save of config files....
 echo "
 BOT_USER_ACCOUNT = $botid" | cat - >> ~/ModTools/automod/constants.py
