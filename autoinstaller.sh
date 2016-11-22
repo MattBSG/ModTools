@@ -1,9 +1,10 @@
+clear
 echo -e "This script will install ModTools in your home directory for your user \n \n \n \n \n \nThis action will use about 100mb of storage. Would you like to continue?"
 # prompt user if they want to install the bot or not
 while true; do
     read -p "[y/n]: " yn
     case $yn in
-        [Yy]* ) clear; echo Running installer; sleep 2; ./install.sh; break;;
+        [Yy]* ) clear; echo Running installer; sleep 2; break;;
         [Nn]* ) echo Quitting; exit;;
         * ) echo "Invalid Selection. Please answer y for yes or n for no.";;
     esac
@@ -28,7 +29,6 @@ sudo python3.5 get-pip.py
 pip install aiohttp
 pip install fuzzywuzzy
 pip install aiofiles
-pip install python-Levenshtein
 pip install Pillow
 python3.5 -m pip install -U discord.py
 easy_install python-slugify
