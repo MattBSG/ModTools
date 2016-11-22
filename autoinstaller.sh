@@ -1,3 +1,52 @@
+arch=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
+
+if [ -f /etc/lsb-release ]; then
+    . /etc/lsb-release
+    os=$DISTRIB_ID
+    ver=$DISTRIB_RELEASE
+
+	if [ "$os" = "Ubuntu" ]; then
+		if [ "$ver" = "12.04" ]; then
+			installer=0
+			levenshtein=0
+		elif [ "$ver" = "14.04" ]; then
+			installer=0
+			levenshtein=0
+		elif [ "$ver" = "16.04" ]; then
+			installer=0
+			levenshtein=1
+		elif [ "$ver" = "16.10" ]; then
+			installer=0
+			levenshtein=1
+		else
+			installer=1
+		fi
+	else
+		echo You are currently running an unsupported OS for this install. You can view the manual installation instuctions to try to try and install it on your own here: https://github.com/MattBSG/ModTools/wiki/Manual-Installation-Instructions
+		echo
+		echo Sorry about that :/
+		exit 1
+	fi
+	if [ "$installer" = 1 ]; then
+		echo You are currently running an unsupported OS for this install. You can view the manual installation instuctions to try to try and install it on your own here: https://github.com/MattBSG/ModTools/wiki/Manual-Installation-Instructions
+		echo
+		echo Sorry about that :/
+		exit 1
+	fi	
+# Future multi-OS support for installation when I'm not lazy
+#
+#elif [ -f /etc/debian_version ]; then
+#    os=Debian
+#    ver=$(cat /etc/debian_version)
+else
+    os=$(uname -s)
+    ver=$(uname -r)
+
+	echo You are currently running an unsupported OS for this install. You can view the manual installation instuctions to try to try and install it on your own here: https://github.com/MattBSG/ModTools/wiki/Manual-Installation-Instructions
+	echo
+	echo Sorry about that :/
+	exit 1
+fi
 clear
 echo -e "This script will install ModTools in your home directory for your user \n \n \n \n \n \nThis action will use about 100mb of storage. Would you like to continue?"
 # prompt user if they want to install the bot or not
@@ -30,6 +79,11 @@ pip install aiohttp
 pip install fuzzywuzzy
 pip install aiofiles
 pip install Pillow
+
+if [ "$levenshtein" = 0 ]; then
+	pip install python-Levenshtein
+fi
+
 python3.5 -m pip install -U discord.py
 easy_install python-slugify
 pip install python-slugify
@@ -46,12 +100,8 @@ python3.5 setup.py install
 cd ~
 rm -rfv installation-files
 
-echo !Installation completed!
-echo .
-echo .
-echo .
-echo .
-echo Starting configuration....
+echo
+echo Installation completed, starting configuration....
 sleep 3
 
 
@@ -128,3 +178,4 @@ echo Configuration complete! If there is any incorrect information entered, you 
 echo
 echo      You can start your bot by running \"python3.5 run.py\"
 echo For more information refer to the wiki.
+exit 0
