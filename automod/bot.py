@@ -2173,7 +2173,7 @@ class AutoMod(discord.Client):
                 user = author
             if not user:
                 raise CommandError('Could not find user info on "%s"' % option)
-            await self.safe_send_message(message.channel, ', '.join([servers.name for servers in self.servers if discord.utils.get(servers.members, id=user.id)]))
+            await self.safe_send_message(message.channel, ', '.join([servers.name for servers in self.servers]))
 
 
 
