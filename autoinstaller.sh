@@ -37,14 +37,14 @@ fi
 if [ "$installer" = 1 ]; then
 		echo -e "This system is running an unsupported OS. Details: \nOS: $os \nVersion: $ver"
 		echo
-		echo This installer will not continue. Please reference the wiki for a list of supported operating systems. Exiting...
+		printf "\e[1;31mThe installer will not continue. Please reference the wiki for a list of supported operating systems. Exiting...\e[0m\n"
 		exit 1
 fi
 
 clear
 
 if [ "$levenshtein" = 1 ]; then
-echo "This OS is not supported in installing python-Levenshtein. This will not affect the bot.
+printf "\e[1;31mThis OS is not supported in installing python-Levenshtein.\e[0m This will not affect the bot.\n"
 fi
 
 echo -e "This script will install ModTools in your home directory for your user \n \nThis action will use about 110mb of storage. Would you like to continue?"
@@ -58,52 +58,53 @@ while true; do
     esac
 done
 
-# Adding repos that have dependancies that we need to download
-sudo add-apt-repository ppa:fkrull/deadsnakes -y
-sudo add-apt-repository ppa:mc3man/trusty-media -y
-apt-get update
-sudo apt-get upgrade -y
+if [ "$os" = "Ubuntu" ]; then
 
-echo 
-echo Installing python and its modules....
-sleep 1
+	# Adding repos that have dependancies that we need to download
+	sudo add-apt-repository ppa:fkrull/deadsnakes -y
+	sudo add-apt-repository ppa:mc3man/trusty-media -y
+	apt-get update
+	sudo apt-get upgrade -y
 
-# Working out of the users home directory to make things easier to find
-mkdir ~/installation-files
-cd ~/installation-files
-sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
-wget https://bootstrap.pypa.io/get-pip.py
-sudo python3.5 get-pip.py
-pip install aiohttp
-pip install fuzzywuzzy
-pip install aiofiles
-pip install Pillow
+	echo 
+	echo Installing python and its modules....
+	sleep 1
 
-if [ "$levenshtein" = 0 ]; then
-	pip install python-Levenshtein
+	# Working out of the users home directory to make things easier to find
+	mkdir ~/installation-files
+	cd ~/installation-files
+	sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
+	wget https://bootstrap.pypa.io/get-pip.py
+	sudo python3.5 get-pip.py
+	pip install aiohttp
+	pip install fuzzywuzzy
+	pip install aiofiles
+	pip install Pillow
+
+	if [ "$levenshtein" = 0 ]; then
+		pip install python-Levenshtein
+	fi
+
+	python3.5 -m pip install -U discord.py
+	easy_install python-slugify
+	pip install python-slugify
+	git clone http://github.com/un33k/python-slugify
+	cd python-slugify
+	python3.5 setup.py install
+	wget https://github.com/un33k/python-slugify/zipball/master
+	cd python-slugify
+	unzip master -d archive-files
+	cd archive-files/un33k-python-slugify-f2ab4b7
+	python3.5 setup.py install
+
+	# cleanup and start the configuration process
+	cd ~
+	rm -rfv installation-files
+
+	echo
+	echo Installation completed, starting configuration....
+	sleep 3
 fi
-
-python3.5 -m pip install -U discord.py
-easy_install python-slugify
-pip install python-slugify
-git clone http://github.com/un33k/python-slugify
-cd python-slugify
-python3.5 setup.py install
-wget https://github.com/un33k/python-slugify/zipball/master
-cd python-slugify
-unzip master -d archive-files
-cd archive-files/un33k-python-slugify-f2ab4b7
-python3.5 setup.py install
-
-# cleanup and start the configuration process
-cd ~
-rm -rfv installation-files
-
-echo
-echo Installation completed, starting configuration....
-sleep 3
-
-
 clear
 echo Ok, our dependancies should have been installed. Lets continue to configuration. We\'ll confirm your options later on
 echo
