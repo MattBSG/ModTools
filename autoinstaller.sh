@@ -24,11 +24,10 @@ if [ -f /etc/lsb-release ]; then
 	else
 		installer=1
 	fi
-# Future multi-OS support for installation when I'm not lazy
-#
-#elif [ -f /etc/debian_version ]; then
-#    os=Debian
-#    ver=$(cat /etc/debian_version)
+
+elif [ -f /etc/debian_version ]; then
+    os=Debian
+    ver=$(cat /etc/debian_version)
 else
     os=$(uname -s)
     ver=$(uname -r)
@@ -104,6 +103,21 @@ if [ "$os" = "Ubuntu" ]; then
 	echo
 	echo Installation completed, starting configuration....
 	sleep 3
+elif [ "$os" = "Debian" ]; then
+	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip -y
+	wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
+	tar -xvf Python-3.5.2.tgz
+	cd Python-3.5.2
+	sudo ./configure
+	sudo make
+	sudo make altinstall
+	git clone https://github.com/MattBSG/ModTools.git ~/ModTools -b master
+	pip3.5 install --upgrade pip
+	pip3.5 install aiohttp
+	pip3.5 install fuzzywuzzy
+	pip3.5 install aiofiles
+	pip3.5 install Pillow
+	python3.5 -m pip install -U discord.py
 fi
 
 #Hand off to config shell file
