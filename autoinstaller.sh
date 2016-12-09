@@ -65,7 +65,7 @@ if [ "$os" = "Ubuntu" ]; then
 	apt-get update
 	sudo apt-get upgrade -y
 
-	echo 
+	echo
 	echo Installing python and its modules....
 	sleep 1
 
@@ -96,7 +96,7 @@ if [ "$os" = "Ubuntu" ]; then
 	cd archive-files/un33k-python-slugify-f2ab4b7
 	python3.5 setup.py install
 
-	# cleanup and start the configuration process
+	# cleanup
 	cd ~
 	rm -rfv installation-files
 
@@ -105,19 +105,35 @@ if [ "$os" = "Ubuntu" ]; then
 	sleep 3
 elif [ "$os" = "Debian" ]; then
 	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip -y
+	mkdir installation-files
+	pushd installation-files
 	wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
 	tar -xvf Python-3.5.2.tgz
 	cd Python-3.5.2
 	sudo ./configure
 	sudo make
 	sudo make altinstall
-	git clone https://github.com/MattBSG/ModTools.git ~/ModTools -b master
 	pip3.5 install --upgrade pip
 	pip3.5 install aiohttp
 	pip3.5 install fuzzywuzzy
 	pip3.5 install aiofiles
+	pip3.5 install python-Levenshtein
 	pip3.5 install Pillow
 	python3.5 -m pip install -U discord.py
+	easy_install python-slugify
+	pip install python-slugify
+	git clone http://github.com/un33k/python-slugify
+	cd python-slugify
+	python3.5 setup.py install
+	wget https://github.com/un33k/python-slugify/zipball/master
+	cd python-slugify
+	unzip master -d archive-files
+	cd archive-files/un33k-python-slugify-f2ab4b7
+	python3.5 setup.py install
+
+	# cleanup
+	cd ~
+	rm -rfv installation-files
 fi
 
 
@@ -126,7 +142,7 @@ fi
 clear
 chmod +x config.sh
 ./config.sh
-# The file will delete it-self as it is unnessecary to keep the file after it is used
+# This file will delete it-self as it is unnessecary to keep the file after it is used
 rm autoinstaller.sh
 exit 0
 
