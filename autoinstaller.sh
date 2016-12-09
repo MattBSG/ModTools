@@ -120,7 +120,13 @@ elif [ "$os" = "Debian" ]; then
 	python3.5 -m pip install -U discord.py
 fi
 
-#Hand off to config shell file
-./config.sh
 
+#Hand off to config shell file
+
+clear
+chmod +x config.sh
+./config.sh
+# The file will delete it-self as it is unnessecary to keep the file after it is used
+rm autoinstaller.sh
 exit 0
+
