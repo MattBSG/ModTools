@@ -1,46 +1,12 @@
-sudo add-apt-repository ppa:fkrull/deadsnakes -y
-sudo add-apt-repository ppa:mc3man/trusty-media -y
-apt-get update
-sudo apt-get upgrade
-
-echo 
-echo Installing python and its modules....
-sleep 1
-
-mkdir ~/installation-files
-cd ~/installation-files
-sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
-wget https://bootstrap.pypa.io/get-pip.py
-sudo python3.5 get-pip.py
-pip install aiohttp
-pip install fuzzywuzzy
-pip install aiofiles
-pip install python-Levenshtein
-pip install Pillow
-python3.5 -m pip install -U discord.py
-easy_install python-slugify
-pip install python-slugify
-git clone http://github.com/un33k/python-slugify
-cd python-slugify
-python3.5 setup.py install
-wget https://github.com/un33k/python-slugify/zipball/master
-cd python-slugify
-unzip master -d archive-files
-cd archive-files/un33k-python-slugify-f2ab4b7
-python3.5 setup.py install
-cd ~
-rm -rfv installation-files
-
-echo !Installation completed!
-echo .
-echo .
-echo .
-echo .
-echo Starting configuration....
-sleep 3
-
-
-clear
+echo "This file is used to configure AutoMod and the related settings. Do not run this if you have previously configured the options! Would you like to start configuration?"
+while true; do
+    read -p "[y/n]: " yn
+    case $yn in
+        [Yy]* ) clear; break;;
+        [Nn]* ) echo Quitting; exit;;
+        * ) echo "Invalid Selection. Please answer y for yes or n for no.";;
+    esac
+done
 echo Ok, our dependancies should have been installed. Lets continue to configuration. We\'ll confirm your options later on
 echo
 echo      Go to https://github.com/MattBSG/ModTools/wiki/Manual-Installation-Instructions#setting-up-the-bot-config
@@ -51,7 +17,7 @@ echo
 echo
 echo Enter the userid of your bot account \(ie. 237760867968614402\):
 read botid
-echo Got it. $botid is the user id for your bot account. Moving on.
+echo Got it. Setting \'$botid\' as the user id for your bot account. Moving on.
 sleep 4
 clear
 
@@ -60,7 +26,7 @@ echo      Click the "Click to reveal" button, then copy and paste the ENTIRE str
 echo 
 echo Enter the token of your bot account:
 read bottoken
-echo Got it. $bottoken is the token for your bot account. Moving on.
+echo Got it. Setting \'$bottoken\' as the token for your bot account. Please note that this is confidential and you should not share this after this point. Moving on.
 sleep 4
 clear
 
@@ -72,7 +38,7 @@ echo      You would enter "66516516512568135" without quotes. This will be set a
 echo
 echo Please enter YOUR userid:
 read ownerid
-echo Got it. $ownerid is the user id to be set as bot owner. Moving on.
+echo Got it. Setting \'$ownerid\' as the user id to be set as bot owner. Moving on.
 sleep 4
 clear
 
@@ -81,9 +47,11 @@ echo      For example: In !!help !! is the command prefix
 echo
 echo Please enter what you would like for your command prefix \(\"!!\" is the default\):
 read prefix
-echo Got it. $prefix will be your command prefix.
+echo Got it. \'$prefix\' will be your command prefix.
 sleep 4
 clear
+
+# Inserting information from the user inputs above to their nessecary locations to make the bot work
 echo Starting save of config files....
 echo "
 BOT_USER_ACCOUNT = $botid" | cat - >> ~/ModTools/automod/constants.py
@@ -111,3 +79,6 @@ echo Configuration complete! If there is any incorrect information entered, you 
 echo
 echo      You can start your bot by running \"python3.5 run.py\"
 echo For more information refer to the wiki.
+# This file will delete it-self since if it is re-run then it will entirely break the config and need to be repaired
+rm config.sh
+exit 0
