@@ -97,7 +97,7 @@ if [ "$os" = "Ubuntu" ]; then
 	python3.5 setup.py install
 
 	# cleanup
-	cd ~
+	cd ~/ModTools
 	rm -rfv installation-files
 
 	echo
@@ -132,7 +132,7 @@ elif [ "$os" = "Debian" ]; then
 	python3.5 setup.py install
 
 	# cleanup
-	cd ~
+	cd ~/ModTools
 	rm -rfv installation-files
 fi
 
