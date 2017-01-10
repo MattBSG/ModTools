@@ -2051,7 +2051,7 @@ class AutoMod(discord.Client):
         Sends a whole buncha info pertaining to the bot to the chat!
         """
         return Response(
-                'I was coded by SexualRhinoceros and modified by MattBSG. I am currently on v{} ! \nFor documentation on my commands or info on how to get my in your'
+                'I was coded by SexualRhinoceros and modified by MattBSG. I am currently on v{} ! \nFor documentation on my commands or info on how to get me in your'
                 ' server, check out this link! {}'.format(VERSION, DOCUMENTATION_FOR_BOT), reply=True)
 
 #    async def cmd_donate(self, message, author, server):
