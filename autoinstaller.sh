@@ -56,8 +56,8 @@ while true; do
         * ) echo "Invalid Selection. Please answer y for yes or n for no.";;
     esac
 done
-
-echo -e "One last thing before starting the installation. Please write the path the bot is in WITH the trailing slash \(i.e. /srv/ModTools/\)"
+j
+echo -e "One last thing before starting the installation. Please write the path the bot is in WITH the trailing slash (i.e. /srv/ModTools/)"
 read path
 
 if [ "$os" = "Ubuntu" ]; then
@@ -95,8 +95,8 @@ if [ "$os" = "Ubuntu" ]; then
 	python3.5 setup.py install
 	wget https://github.com/un33k/python-slugify/zipball/master
 	cd python-slugify
-	unzip master -d archive-files
-	cd archive-files/un33k-python-slugify-f2ab4b7
+	unzip master
+	cd un33k-python-slugify-f2ab4b7
 	python3.5 setup.py install
 
 elif [ "$os" = "Debian" ]; then
@@ -118,6 +118,7 @@ elif [ "$os" = "Debian" ]; then
 	python3.5 -m pip install -U discord.py
 	easy_install python-slugify
 	pip install python-slugify
+	cd ..
 	git clone http://github.com/un33k/python-slugify
 	cd python-slugify
 	python3.5 setup.py install
@@ -129,6 +130,7 @@ elif [ "$os" = "Debian" ]; then
 fi
 
 # cleanup; too tired to think of better solution
+	cd ..
 	cd ..
 	cd ..
 	rm -rfv installation-files
