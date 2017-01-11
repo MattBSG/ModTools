@@ -1,5 +1,5 @@
 arch=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
-
+# this is just a mess, leave me be
 if [ -f /etc/lsb-release ]; then
     . /etc/lsb-release
     os=$DISTRIB_ID
@@ -69,40 +69,33 @@ if [ "$os" = "Ubuntu" ]; then
 	echo Installing python and its modules....
 	sleep 1
 
-	# Working out of the users home directory to make things easier to find
-	mkdir ~/installation-files
-	cd ~/installation-files
+	# Working out of the users current directory
+	mkdir installation-files
+	cd installation-files
 	sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
 	wget https://bootstrap.pypa.io/get-pip.py
 	sudo python3.5 get-pip.py
-	pip install aiohttp
-	pip install fuzzywuzzy
-	pip install aiofiles
-	pip install Pillow
+	sudo pip install aiohttp
+	sudo pip install fuzzywuzzy
+	sudo pip install aiofiles
+	sudo pip install Pillow
 
 	if [ "$levenshtein" = 0 ]; then
-		pip install python-Levenshtein
+		sudo pip install python-Levenshtein
 	fi
 
 	python3.5 -m pip install -U discord.py
 	easy_install python-slugify
-	pip install python-slugify
+	sudo pip install python-slugify
 	git clone http://github.com/un33k/python-slugify
 	cd python-slugify
 	python3.5 setup.py install
 	wget https://github.com/un33k/python-slugify/zipball/master
 	cd python-slugify
-	unzip master -d archive-files
-	cd archive-files/un33k-python-slugify-f2ab4b7
+	unzip master
+	cd un33k-python-slugify-f2ab4b7
 	python3.5 setup.py install
 
-	# cleanup
-	cd ~/ModTools
-	rm -rfv installation-files
-
-	echo
-	echo Installation completed, starting configuration....
-	sleep 3
 elif [ "$os" = "Debian" ]; then
 	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip -y
 	mkdir installation-files
@@ -122,20 +115,26 @@ elif [ "$os" = "Debian" ]; then
 	python3.5 -m pip install -U discord.py
 	easy_install python-slugify
 	pip install python-slugify
+	cd ..
 	git clone http://github.com/un33k/python-slugify
 	cd python-slugify
 	python3.5 setup.py install
 	wget https://github.com/un33k/python-slugify/zipball/master
 	cd python-slugify
-	unzip master -d archive-files
-	cd archive-files/un33k-python-slugify-f2ab4b7
+	unzip master
+	cd un33k-python-slugify-f2ab4b7
 	python3.5 setup.py install
-
-	# cleanup
-	cd ~/ModTools
-	rm -rfv installation-files
 fi
 
+# cleanup; too tired to think of better solution
+	cd ..
+	cd ..
+	cd ..
+	rm -rfv installation-files
+
+	echo
+	echo Installation completed, starting configuration....
+	sleep 3
 
 #Hand off to config shell file
 
