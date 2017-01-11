@@ -121,8 +121,8 @@ elif [ "$os" = "Debian" ]; then
 	python3.5 setup.py install
 	wget https://github.com/un33k/python-slugify/zipball/master
 	cd python-slugify
-	unzip master -d archive-files
-	cd archive-files/un33k-python-slugify-f2ab4b7
+	unzip master
+	cd un33k-python-slugify-f2ab4b7
 	python3.5 setup.py install
 fi
 
