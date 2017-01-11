@@ -54,7 +54,7 @@ clear
 # Inserting information from the user inputs above to their nessecary locations to make the bot work
 echo Starting save of config files....
 echo "
-BOT_USER_ACCOUNT = $botid" | cat - >> ~/ModTools/automod/constants.py
+BOT_USER_ACCOUNT = $botid" | cat - >> automod/constants.py
 echo "[Credentials]
 Token = $bottoken
 
@@ -62,7 +62,7 @@ Token = $bottoken
 OwnerID = $ownerid
 
 [Chat]
-CommandPrefix = $prefix" | cat - >> ~/ModTools/config/options.txt
+CommandPrefix = $prefix" | cat - >> config/options.txt
 echo Done.
 sleep 2
 clear
@@ -75,7 +75,7 @@ echo Your ID = \"$ownerid\"
 echo Command Prefix = \"$prefix\"
 echo
 echo
-echo Configuration complete! If there is any incorrect information entered, you will need to manually edit it in either automod/constants.py or config/configs.txt
+echo Configuration complete! If there is any incorrect information, you will need to manually edit it in either automod/constants.py or config/configs.txt
 echo
 echo      You can start your bot by running \"python3.5 run.py\"
 echo For more information refer to the wiki.
