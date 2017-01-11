@@ -99,13 +99,6 @@ if [ "$os" = "Ubuntu" ]; then
 	cd archive-files/un33k-python-slugify-f2ab4b7
 	python3.5 setup.py install
 
-	# cleanup; too tired to think of better solution
-	cd ~/ModTools
-	rm -rfv installation-files
-
-	echo
-	echo Installation completed, starting configuration....
-	sleep 3
 elif [ "$os" = "Debian" ]; then
 	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip -y
 	mkdir installation-files
@@ -133,12 +126,16 @@ elif [ "$os" = "Debian" ]; then
 	unzip master -d archive-files
 	cd archive-files/un33k-python-slugify-f2ab4b7
 	python3.5 setup.py install
-
-	# cleanup
-	cd $path
-	rm -rfv installation-files
 fi
 
+# cleanup; too tired to think of better solution
+	cd ..
+	cd ..
+	rm -rfv installation-files
+
+	echo
+	echo Installation completed, starting configuration....
+	sleep 3
 
 #Hand off to config shell file
 
