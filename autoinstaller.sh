@@ -56,9 +56,6 @@ while true; do
         * ) echo "Invalid Selection. Please answer y for yes or n for no.";;
     esac
 done
-j
-echo -e "One last thing before starting the installation. Please write the path the bot is in WITH the trailing slash (i.e. /srv/ModTools/)"
-read path
 
 if [ "$os" = "Ubuntu" ]; then
 
