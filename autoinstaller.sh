@@ -1,5 +1,5 @@
 arch=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
-
+# this is just a mess, leave me be
 if [ -f /etc/lsb-release ]; then
     . /etc/lsb-release
     os=$DISTRIB_ID
@@ -57,6 +57,9 @@ while true; do
     esac
 done
 
+echo -e "One last thing before starting the installation. Please write the path the bot is in WITH the trailing slash \(i.e. /srv/ModTools/\)"
+read path
+
 if [ "$os" = "Ubuntu" ]; then
 
 	# Adding repos that have dependancies that we need to download
@@ -69,24 +72,24 @@ if [ "$os" = "Ubuntu" ]; then
 	echo Installing python and its modules....
 	sleep 1
 
-	# Working out of the users home directory to make things easier to find
-	mkdir ~/installation-files
-	cd ~/installation-files
+	# Working out of the users current directory
+	mkdir installation-files
+	cd installation-files
 	sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
 	wget https://bootstrap.pypa.io/get-pip.py
 	sudo python3.5 get-pip.py
-	pip install aiohttp
-	pip install fuzzywuzzy
-	pip install aiofiles
-	pip install Pillow
+	sudo pip install aiohttp
+	sudo pip install fuzzywuzzy
+	sudo pip install aiofiles
+	sudo pip install Pillow
 
 	if [ "$levenshtein" = 0 ]; then
-		pip install python-Levenshtein
+		sudo pip install python-Levenshtein
 	fi
 
 	python3.5 -m pip install -U discord.py
 	easy_install python-slugify
-	pip install python-slugify
+	sudo pip install python-slugify
 	git clone http://github.com/un33k/python-slugify
 	cd python-slugify
 	python3.5 setup.py install
@@ -96,7 +99,7 @@ if [ "$os" = "Ubuntu" ]; then
 	cd archive-files/un33k-python-slugify-f2ab4b7
 	python3.5 setup.py install
 
-	# cleanup
+	# cleanup; too tired to think of better solution
 	cd ~/ModTools
 	rm -rfv installation-files
 
@@ -132,7 +135,7 @@ elif [ "$os" = "Debian" ]; then
 	python3.5 setup.py install
 
 	# cleanup
-	cd ~/ModTools
+	cd $path
 	rm -rfv installation-files
 fi
 
