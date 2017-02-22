@@ -9,7 +9,7 @@ while true; do
 done
 echo Ok, our dependancies should have been installed. Lets continue to configuration. We\'ll confirm your options later on
 echo
-echo      Go to https://github.com/MattBSG/ModTools/wiki/Manual-Installation-Instructions#setting-up-the-bot-config
+echo      Go to https://github.com/MattBSG/ModTools/wiki/Configuration
 echo
 echo
 echo Follow the instructions to create an application and bot account. Then enter the accounts USER ID in the following prompt. Make sure it is the CORRECT user id or ModTools will give the wrong invite link!
@@ -80,5 +80,5 @@ echo
 echo      You can start your bot by running \"python3.5 run.py\"
 echo For more information refer to the wiki.
 # This file will delete it-self since if it is re-run then it will entirely break the config and need to be repaired
-rm config.sh
+rm linux-config.sh
 exit 0

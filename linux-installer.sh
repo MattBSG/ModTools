@@ -79,22 +79,11 @@ if [ "$os" = "Ubuntu" ]; then
 	sudo pip install fuzzywuzzy
 	sudo pip install aiofiles
 	sudo pip install Pillow
-
+	python3.5 -m pip install -U discord.py
+	sudo pip install python-slugify
 	if [ "$levenshtein" = 0 ]; then
 		sudo pip install python-Levenshtein
 	fi
-
-	python3.5 -m pip install -U discord.py
-	easy_install python-slugify
-	sudo pip install python-slugify
-	git clone http://github.com/un33k/python-slugify
-	cd python-slugify
-	python3.5 setup.py install
-	wget https://github.com/un33k/python-slugify/zipball/master
-	cd python-slugify
-	unzip master
-	cd un33k-python-slugify-f2ab4b7
-	python3.5 setup.py install
 
 elif [ "$os" = "Debian" ]; then
 	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip -y
@@ -106,6 +95,7 @@ elif [ "$os" = "Debian" ]; then
 	sudo ./configure
 	sudo make
 	sudo make altinstall
+	cd ..
 	pip3.5 install --upgrade pip
 	pip3.5 install aiohttp
 	pip3.5 install fuzzywuzzy
@@ -113,35 +103,22 @@ elif [ "$os" = "Debian" ]; then
 	pip3.5 install python-Levenshtein
 	pip3.5 install Pillow
 	python3.5 -m pip install -U discord.py
-	easy_install python-slugify
-	pip install python-slugify
-	cd ..
-	git clone http://github.com/un33k/python-slugify
-	cd python-slugify
-	python3.5 setup.py install
-	wget https://github.com/un33k/python-slugify/zipball/master
-	cd python-slugify
-	unzip master
-	cd un33k-python-slugify-f2ab4b7
-	python3.5 setup.py install
+	pip3.5 install python-slugify
 fi
 
 # cleanup; too tired to think of better solution
-	cd ..
-	cd ..
-	cd ..
 	rm -rfv installation-files
 
 	echo
 	echo Installation completed, starting configuration....
 	sleep 3
 
-#Hand off to config shell file
+# Hand off to config shell file
 
 clear
 chmod +x config.sh
-./config.sh
+./linux-config.sh
 # This file will delete it-self as it is unnessecary to keep the file after it is used
-rm autoinstaller.sh
+rm linux-installer.sh
 exit 0
 
