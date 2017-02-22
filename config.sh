@@ -17,7 +17,7 @@ echo
 echo
 echo Enter the userid of your bot account \(ie. 237760867968614402\):
 read botid
-echo Got it. $botid is the user id for your bot account. Moving on.
+echo Got it. Setting \'$botid\' as the user id for your bot account. Moving on.
 sleep 4
 clear
 
@@ -26,7 +26,7 @@ echo      Click the "Click to reveal" button, then copy and paste the ENTIRE str
 echo 
 echo Enter the token of your bot account:
 read bottoken
-echo Got it. $bottoken is the token for your bot account. Moving on.
+echo Got it. Setting \'$bottoken\' as the token for your bot account. Please note that this is confidential and you should not share this after this point. Moving on.
 sleep 4
 clear
 
@@ -38,7 +38,7 @@ echo      You would enter "66516516512568135" without quotes. This will be set a
 echo
 echo Please enter YOUR userid:
 read ownerid
-echo Got it. $ownerid is the user id to be set as bot owner. Moving on.
+echo Got it. Setting \'$ownerid\' as the user id to be set as bot owner. Moving on.
 sleep 4
 clear
 
@@ -47,14 +47,14 @@ echo      For example: In !!help !! is the command prefix
 echo
 echo Please enter what you would like for your command prefix \(\"!!\" is the default\):
 read prefix
-echo Got it. $prefix will be your command prefix.
+echo Got it. \'$prefix\' will be your command prefix.
 sleep 4
 clear
 
 # Inserting information from the user inputs above to their nessecary locations to make the bot work
 echo Starting save of config files....
 echo "
-BOT_USER_ACCOUNT = $botid" | cat - >> ~/ModTools/automod/constants.py
+BOT_USER_ACCOUNT = $botid" | cat - >> automod/constants.py
 echo "[Credentials]
 Token = $bottoken
 
@@ -62,7 +62,7 @@ Token = $bottoken
 OwnerID = $ownerid
 
 [Chat]
-CommandPrefix = $prefix" | cat - >> ~/ModTools/config/options.txt
+CommandPrefix = $prefix" | cat - >> config/options.txt
 echo Done.
 sleep 2
 clear
@@ -75,7 +75,7 @@ echo Your ID = \"$ownerid\"
 echo Command Prefix = \"$prefix\"
 echo
 echo
-echo Configuration complete! If there is any incorrect information entered, you will need to manually edit it in either automod/constants.py or config/configs.txt
+echo Configuration complete! If there is any incorrect information, you will need to manually edit it in either automod/constants.py or config/configs.txt
 echo
 echo      You can start your bot by running \"python3.5 run.py\"
 echo For more information refer to the wiki.
