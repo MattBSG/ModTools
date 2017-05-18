@@ -1802,56 +1802,54 @@ class AutoMod(discord.Client):
         Replies with "PONG!"; Use to test bot's responsiveness
         """
         if await self.has_roles(message.channel, author, server, command='ping'):
-            if author.id == '94408525366697984':
+            if author.id == '125233822760566784':
                 return Response('Hi Dad! :middle_finger:', reply=True)
-            elif author.id == '141989359254503425':
-                return Response('Merhaba! Adım AutoMod. I am working and operational!', reply=True)
             else:
                 return Response('PONG!', reply=True)
 
-    async def cmd_olduserinfoplsnouse(self, message, mentions, author, server, option=None):
-        """
-        Usage: TELL RHINO TO ADD THIS
-        """
-        if await self.has_roles(message.channel, author, server, command='adad'):
-            join_str = None
-            user = None
-            if mentions:
-                user = mentions[0]
-                join_str = user.joined_at.strftime("%c")
-            elif not mentions and option:
-                if discord.utils.get(server.members, name=option):
-                    user = discord.utils.get(server.members, name=option)
-                    join_str = user.joined_at.strftime("%c")
-                elif discord.utils.get(server.members, id=option):
-                    user = discord.utils.get(server.members, id=option)
-                    join_str = user.joined_at.strftime("%c")
-                if not user:
-                    join_str = 'NOT IN SERVER'
-                    for servers in self.servers:
-                        if discord.utils.get(servers.members, name=option):
-                            user = discord.utils.get(servers.members, name=option)
-                        elif discord.utils.get(servers.members, id=option):
-                            user = discord.utils.get(servers.members, id=option)
-            elif not option:
-                user = author
-                join_str = user.joined_at.strftime("%c")
-            if not user:
-                raise CommandError('Could not find user info on "%s"' % option)
-            await self.user_index_check(user)
-            await self.safe_send_message(message.channel,
-                    '```​          User: {}#{}\n         Names: {}\n            ID: {}\n    Created At'
-                    ': {}\n        Joined: {}\n     # of Bans: {}\n   Infractions: {}\nShared Servers: {}\n        Avatar: {} \n```'.format(
-                            clean_string(user.name), user.discriminator,
-                            clean_string(', '.join(self.user_dict[user.id]['names'][-20:])), user.id,
-                            snowflake_time(user.id).strftime("%c"), join_str,
-                            self.user_dict[user.id]['severs_banned_in'],
-                            self.user_dict[user.id]['actions_taken_against'],
-                            len([servers for servers in self.servers if discord.utils.get(servers.members,
-                                                                                                     id=user.id)]),
-                            clean_string(user.avatar_url)
-                    )
-            )
+#    async def cmd_olduserinfoplsnouse(self, message, mentions, author, server, option=None):
+#        """
+#        Usage: TELL RHINO TO ADD THIS
+#        """
+#        if await self.has_roles(message.channel, author, server, command='adad'):
+#            join_str = None
+#            user = None
+#            if mentions:
+#                user = mentions[0]
+#                join_str = user.joined_at.strftime("%c")
+#            elif not mentions and option:
+#                if discord.utils.get(server.members, name=option):
+#                    user = discord.utils.get(server.members, name=option)
+#                    join_str = user.joined_at.strftime("%c")
+#                elif discord.utils.get(server.members, id=option):
+#                    user = discord.utils.get(server.members, id=option)
+#                    join_str = user.joined_at.strftime("%c")
+#                if not user:
+#                    join_str = 'NOT IN SERVER'
+#                    for servers in self.servers:
+#                        if discord.utils.get(servers.members, name=option):
+#                           user = discord.utils.get(servers.members, name=option)
+#                        elif discord.utils.get(servers.members, id=option):
+#                            user = discord.utils.get(servers.members, id=option)
+#            elif not option:
+#                user = author
+#                join_str = user.joined_at.strftime("%c")
+#           if not user:
+#                raise CommandError('Could not find user info on "%s"' % option)
+#            await self.user_index_check(user)
+#            await self.safe_send_message(message.channel,
+#                    '```​          User: {}#{}\n         Names: {}\n            ID: {}\n    Created At'
+#                    ': {}\n        Joined: {}\n     # of Bans: {}\n   Infractions: {}\nShared Servers: {}\n        Avatar: {} \n```'.format(
+#                            clean_string(user.name), user.discriminator,
+#                            clean_string(', '.join(self.user_dict[user.id]['names'][-20:])), user.id,
+#                            snowflake_time(user.id).strftime("%c"), join_str,
+#                            self.user_dict[user.id]['severs_banned_in'],
+#                            self.user_dict[user.id]['actions_taken_against'],
+#                            len([servers for servers in self.servers if discord.utils.get(servers.members,
+#                                                                                                     id=user.id)]),
+#                            clean_string(user.avatar_url)
+#                    )
+#            )
 
     async def cmd_userinfo(self, message, mentions, author, server, option=None):
         """
@@ -2215,7 +2213,7 @@ class AutoMod(discord.Client):
             return Response(':thumbsup:', reply=True)
         return
 
-    async def cmd_changeavi(self, author, string_avi):
+    async def cmd_setavatar(self, author, string_avi):
         """
         Usage: {command_prefix}changegame ["new game name"]
         Changes the "Now Playing..." game on Discord!
@@ -2393,7 +2391,7 @@ class AutoMod(discord.Client):
                                                                                            server.name
                                                                                            )
                                          )
-            await self.safe_send_message(channel, '**Shutting down...**')
+            await self.safe_send_message(channel, '**Shutting down... :see_no_evil:**')
             await self.backup_config(self.server_index)
             await self.logout()
         return
