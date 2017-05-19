@@ -2324,7 +2324,12 @@ class AutoMod(discord.Client):
                     await asyncio.sleep(1)
                 except:
                     print('cannot ban on %s' % server.name)
-            write_file('config/banonjoin.txt', self.banonjoin)
+            gban = open('config/banonjoin.txt', 'a')
+            self.banonjoin = str(self.banonjoin)[5:0] + this_id + '\n'
+            gban.write(self.banonjoin)
+            gban.close()
+#            write_file('config/banonjoin.txt', self.banonjoin)
+            print(this_id, 'Has been global banned')
             return Response(':thumbsup:', reply=True)
         return
 
