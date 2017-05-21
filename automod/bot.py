@@ -21,7 +21,7 @@ from automod.config import Config
 from automod.register import Register
 from automod.response import Response
 from automod.version import VERSION
-from automod.utils import load_json, write_json, load_file, write_file, compare_strings, do_slugify, clean_string, \
+from automod.utils import load_json, write_json, load_file, compare_strings, do_slugify, clean_string, \
     snowflake_time, strict_compare_strings, load_json_async, write_json_norm
 
 from .exceptions import CommandError
@@ -30,11 +30,11 @@ from .constants import BOT_HANDLER_ROLE, RHINO_SERVER, RHINO_SERVER_CHANNEL, DOC
     OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SHITTY_BAN_LIST
 
 
-# logger = logging.getLogger('discord')
-# logger.setLevel(logging.DEBUG)
-# handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-# handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-# logger.addHandler(handler)
+#logger = logging.getLogger('discord')
+#logger.setLevel(logging.DEBUG)
+#handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+#handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+#logger.addHandler(handler)
 
 def strfdelta(tdelta):
     t = {'days': 'days',
@@ -596,7 +596,7 @@ class AutoMod(discord.Client):
         else:
             content = message.clean_content.replace('\"{}\"'.format(reason), '')
         await self.safe_send_message(discord.Object(id=config[8]),
-                                     'At *{}* in **<#{}>**, **{}** has used the command ```{}```Reason: `{}`'
+                                     'At `{}` UTC in **<#{}>**, **{}** used the command ```{}```Reason: `{}`'
                                      ''.format(datetime.utcnow().strftime("%H:%M:%S on %a %b %d"), message.channel.id,
                                                clean_string(author.name), content, reason), server=server)
 
@@ -611,17 +611,17 @@ class AutoMod(discord.Client):
         if not config[8] or not config[10][0]:
             return
         if not reason:
-            reason = "***No Reason Specified***"
+            reason = "*No reason was specified*"
         if not channel:
-            await self.safe_send_message(discord.Object(id=config[8]), 'At *{}*, I automatically {} **{}** due to {}'
+            await self.safe_send_message(discord.Object(id=config[8]), 'At `{}` UTC, I automatically took action against **{}** due to {}.\n**Action:** __{}__.'
                                                                        ''.format(
-                    datetime.utcnow().strftime("%H:%M:%S on %a %b %d"), autoaction, clean_string(offender.name),
+                    datetime.utcnow().strftime("%H:%M:%S on %a %b %d"), clean_string(offender.name), autoaction,
                     reason))
         else:
             await self.safe_send_message(discord.Object(id=config[8]),
-                                         'At *{}*, I automatically {} **{}** in <#{}> for {}'
-                                         ''.format(datetime.utcnow().strftime("%H:%M:%S on %a %b %d"), autoaction,
-                                                   clean_string(offender.name), channel.id, reason), server=server)
+                                         'At `{}` UTC, I automatically took action against **{}** in <#{}> due to {}. \n**Action:** __{}__'
+                                         ''.format(datetime.utcnow().strftime("%H:%M:%S on %a %b %d"),
+                                                   clean_string(offender.name), channel.id, reason, autoaction), server=server)
 
     # TODO: Make this code that is mine, not stuff taken from code written by @Sharpwaves
     async def do_server_log(self, message=None, log_flag=None, member=None, before=None, after=None, server=None, reason=None, banned_id=None):
@@ -665,7 +665,7 @@ class AutoMod(discord.Client):
                                              server=member.server)
                 if datetime.utcnow() - timedelta(hours=24) < member.created_at:
                     await self.safe_send_message(discord.Object(id=config[9]),
-                                                 '‼ **New account** __**{}#{}**__ *({})* **joined server** *({})*'
+                                                 '‼ **New account** __**{}#{}**__ *({})* **joined server** *(Created {} ago)*'
                                                  ''.format(clean_string(member.name.upper()), member.discriminator,
                                                            member.id, strfdelta(datetime.utcnow() - member.created_at)))
 
@@ -712,7 +712,7 @@ class AutoMod(discord.Client):
                     return
                 await self.safe_send_message(discord.Object(id=config[9]),
                                              '`[{}]` 🚫 **USER ID** *{}* ** WAS AUTOMATICALLY BANNED FROM THE SERVER DUE TO A GLOBAL BAN'
-                                             '** 🚫\n\t**REASON:** {}'.format(datetime.utcnow().strftime("%H:%M:%S"),
+                                             '** 🚫\n**REASON:** {} \n\nFor more information about global bans, see <https://github.com/MattBSG/ModTools/wiki/FAQ#global-bans>'.format(datetime.utcnow().strftime("%H:%M:%S"),
                                                                                 banned_id,
                                                                                 reason),
                                              server=server)
@@ -1802,56 +1802,51 @@ class AutoMod(discord.Client):
         Replies with "PONG!"; Use to test bot's responsiveness
         """
         if await self.has_roles(message.channel, author, server, command='ping'):
-            if author.id == '94408525366697984':
-                return Response('Hi Dad! :middle_finger:', reply=True)
-            elif author.id == '141989359254503425':
-                return Response('Merhaba! Adım AutoMod. I am working and operational!', reply=True)
-            else:
-                return Response('PONG!', reply=True)
+            return Response('PONG!', reply=True)
 
-    async def cmd_olduserinfoplsnouse(self, message, mentions, author, server, option=None):
-        """
-        Usage: TELL RHINO TO ADD THIS
-        """
-        if await self.has_roles(message.channel, author, server, command='adad'):
-            join_str = None
-            user = None
-            if mentions:
-                user = mentions[0]
-                join_str = user.joined_at.strftime("%c")
-            elif not mentions and option:
-                if discord.utils.get(server.members, name=option):
-                    user = discord.utils.get(server.members, name=option)
-                    join_str = user.joined_at.strftime("%c")
-                elif discord.utils.get(server.members, id=option):
-                    user = discord.utils.get(server.members, id=option)
-                    join_str = user.joined_at.strftime("%c")
-                if not user:
-                    join_str = 'NOT IN SERVER'
-                    for servers in self.servers:
-                        if discord.utils.get(servers.members, name=option):
-                            user = discord.utils.get(servers.members, name=option)
-                        elif discord.utils.get(servers.members, id=option):
-                            user = discord.utils.get(servers.members, id=option)
-            elif not option:
-                user = author
-                join_str = user.joined_at.strftime("%c")
-            if not user:
-                raise CommandError('Could not find user info on "%s"' % option)
-            await self.user_index_check(user)
-            await self.safe_send_message(message.channel,
-                    '```​          User: {}#{}\n         Names: {}\n            ID: {}\n    Created At'
-                    ': {}\n        Joined: {}\n     # of Bans: {}\n   Infractions: {}\nShared Servers: {}\n        Avatar: {} \n```'.format(
-                            clean_string(user.name), user.discriminator,
-                            clean_string(', '.join(self.user_dict[user.id]['names'][-20:])), user.id,
-                            snowflake_time(user.id).strftime("%c"), join_str,
-                            self.user_dict[user.id]['severs_banned_in'],
-                            self.user_dict[user.id]['actions_taken_against'],
-                            len([servers for servers in self.servers if discord.utils.get(servers.members,
-                                                                                                     id=user.id)]),
-                            clean_string(user.avatar_url)
-                    )
-            )
+#    async def cmd_olduserinfoplsnouse(self, message, mentions, author, server, option=None):
+#        """
+#        Usage: TELL RHINO TO ADD THIS
+#        """
+#        if await self.has_roles(message.channel, author, server, command='adad'):
+#            join_str = None
+#            user = None
+#            if mentions:
+#                user = mentions[0]
+#                join_str = user.joined_at.strftime("%c")
+#            elif not mentions and option:
+#                if discord.utils.get(server.members, name=option):
+#                    user = discord.utils.get(server.members, name=option)
+#                    join_str = user.joined_at.strftime("%c")
+#                elif discord.utils.get(server.members, id=option):
+#                    user = discord.utils.get(server.members, id=option)
+#                    join_str = user.joined_at.strftime("%c")
+#                if not user:
+#                    join_str = 'NOT IN SERVER'
+#                    for servers in self.servers:
+#                        if discord.utils.get(servers.members, name=option):
+#                            user = discord.utils.get(servers.members, name=option)
+#                        elif discord.utils.get(servers.members, id=option):
+#                            user = discord.utils.get(servers.members, id=option)
+#            elif not option:
+#                user = author
+#                join_str = user.joined_at.strftime("%c")
+#            if not user:
+#                raise CommandError('Could not find user info on "%s"' % option)
+#            await self.user_index_check(user)
+#            await self.safe_send_message(message.channel,
+#                    '```​          User: {}#{}\n         Names: {}\n            ID: {}\n    Created At'
+#                    ': {}\n        Joined: {}\n     # of Bans: {}\n   Infractions: {}\nShared Servers: {}\n        Avatar: {} \n```'.format(
+#                            clean_string(user.name), user.discriminator,
+#                            clean_string(', '.join(self.user_dict[user.id]['names'][-20:])), user.id,
+#                            snowflake_time(user.id).strftime("%c"), join_str,
+#                            self.user_dict[user.id]['severs_banned_in'],
+#                            self.user_dict[user.id]['actions_taken_against'],
+#                            len([servers for servers in self.servers if discord.utils.get(servers.members,
+#                                                                                                     id=user.id)]),
+#                            clean_string(user.avatar_url)
+#                    )
+#            )
 
     async def cmd_userinfo(self, message, mentions, author, server, option=None):
         """
@@ -1991,7 +1986,7 @@ class AutoMod(discord.Client):
             else:
                 if mentions:
                     if command:
-                        raise CommandError('Invalid syntax, command not used in `clear` statements')
+                        raise CommandError('Invalid syntax, commands are not used in `clear` statements')
                     for users in mentions:
                         for command, user_role_list in self.server_index[server.id][16][0].items():
                             if users.id in user_role_list[0]:
@@ -2026,7 +2021,7 @@ class AutoMod(discord.Client):
         """
         if await self.has_roles(message.channel, author, server, command='help'):
             return Response(
-			'Here is a link to my wiki: <https://github.com/MattBSG/ModTools/wiki/Command-List>', reply=True)
+            'Here is a link to my wiki: <https://github.com/MattBSG/ModTools/wiki/Command-List>', reply=True)
 
     async def cmd_cls(self, message, author, server, channel):
         """
@@ -2051,7 +2046,7 @@ class AutoMod(discord.Client):
         Sends a whole buncha info pertaining to the bot to the chat!
         """
         return Response(
-                'I was coded by SexualRhinoceros and modified by MattBSG. I am currently on v{} ! \nFor documentation on my commands or info on how to get me in your'
+                'I was coded by SexualRhinoceros and modified by MattBSG. I am currently on v{} ! \nFor documentation on my commands or info on how to get my in your'
                 ' server, check out this link! {}'.format(VERSION, DOCUMENTATION_FOR_BOT), reply=True)
 
 #    async def cmd_donate(self, message, author, server):
@@ -2177,22 +2172,23 @@ class AutoMod(discord.Client):
 
 
 
-    async def cmd_changegame(self, author, option, string_game):
-        """
-        Usage: {command_prefix}changegame ["new game name"]
-        Changes the "Now Playing..." game on Discord!
-        """
-        if author.id == self.config.master_id:
-            if option not in ['+', 'true', '-', 'false']:
-                return Response('🖕 bad input you ass', reply=True)
-            if option in ['+', 'true']:
-                await self.change_status(game=discord.Game(name=string_game,
-                                                           url='https://www.twitch.tv/mattbsg',
-                                                           type=1))
-            else:
-                await self.change_status(game=discord.Game(name=string_game))
-            return Response(':thumbsup:', reply=True)
-        return
+#    async def cmd_changegame(self, author, option, string_game):
+#        """
+#        Usage: {command_prefix}changegame ["new game name"]
+#        Changes the "Now Playing..." game on Discord!
+#        """
+#        if author.id == self.config.master_id:
+#            if option not in ['+', 'true', '-', 'false']:
+#                return Response('🖕 bad input you ass', reply=True)
+#            if option in ['+', 'true']:
+#                await self.change_status(game=discord.Game(name=string_game,
+#                                                           url='https://www.twitch.tv/mattbsg',
+#                                                           type=1))
+#            else:
+#                await self.change_status(game=discord.Game(name=string_game))
+#            return Response(':thumbsup:', reply=True)
+#        return
+
     async def cmd_promote(self, author, string_game):
         """
         Usage: {command_prefix}changegame ["new game name"]
@@ -2215,7 +2211,7 @@ class AutoMod(discord.Client):
             return Response(':thumbsup:', reply=True)
         return
 
-    async def cmd_changeavi(self, author, string_avi):
+    async def cmd_setavatar(self, author, string_avi):
         """
         Usage: {command_prefix}changegame ["new game name"]
         Changes the "Now Playing..." game on Discord!
@@ -2300,7 +2296,11 @@ class AutoMod(discord.Client):
                     self.globalbans.add(discord.utils.get(self.servers, id=key).id)
                 else:
                     print('I did fuck all')
-                write_file('config/globalbans.txt', self.globalbans)
+                print('Server %s was blacklisted' % key)
+                sban = open('config/globalbans.txt', 'a')
+                self.globalbans = str(self.globalbans)[5:0] + key + '\n'
+                sban.write(self.globalbans)
+                sban.close()
                 return Response(':thumbsup:', reply=True)
             except:
                 return Response(':thumbsdown:', reply=True)
@@ -2325,7 +2325,12 @@ class AutoMod(discord.Client):
                     await asyncio.sleep(1)
                 except:
                     print('cannot ban on %s' % server.name)
-            write_file('config/banonjoin.txt', self.banonjoin)
+            gban = open('config/banonjoin.txt', 'a')
+            self.banonjoin = str(self.banonjoin)[5:0] + this_id + '\n'
+            gban.write(self.banonjoin)
+            gban.close()
+#            write_file('config/banonjoin.txt', self.banonjoin)
+            print(this_id, 'Has been global banned')
             return Response(':thumbsup:', reply=True)
         return
 
@@ -2393,7 +2398,7 @@ class AutoMod(discord.Client):
                                                                                            server.name
                                                                                            )
                                          )
-            await self.safe_send_message(channel, '**Shutting down...**')
+            await self.safe_send_message(channel, '**Powering off :see_no_evil:**')
             await self.backup_config(self.server_index)
             await self.logout()
         return
@@ -2418,8 +2423,8 @@ class AutoMod(discord.Client):
         """
         blahblahblah
         """
-        return Response('Here is my OAuth URL!:\n{}'
-                        ''.format(discord.utils.oauth_url( BOT_USER_ACCOUNT, permissions=discord.Permissions.all())),
+        return Response('Here is my OAuth URL!:\n<{}>'
+                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
                         reply=True)
 
     async def cmd_joinserver(self):
@@ -2427,8 +2432,8 @@ class AutoMod(discord.Client):
         Usage {command_prefix}joinserver [Server Link]
         Asks the bot to join a server.
         """
-        return Response('I am quite happy you would like me to join one of your servers! Just remember that to function properly, I must have **administrator** permissions. Here is my invite link:\n{}'
-                        ''.format(discord.utils.oauth_url( BOT_USER_ACCOUNT, permissions=discord.Permissions.all())),
+        return Response('I am quite happy you would like me to join one of your servers! Just remember that to function properly, I must have **administrator** permissions. Here is my invite link:\n<{}>'
+                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
                         reply=True)
 
     async def on_server_join(self, server):
@@ -2758,8 +2763,8 @@ class AutoMod(discord.Client):
             for register_instance in self.register_instances.values():
                 if register_instance.server.id == message.server.id:
                     await self.safe_send_message(message.channel,
-                                                 'You cannot use the bot until it has been set up. <@{}> is in the process of'
-                                                 ' configuring AutoModerator!'.format(register_instance.user.id))
+                                                 'You cannot use the bot until it has been set up. <@{}> has already started the process of'
+                                                 ' configuring AutoMod!'.format(register_instance.user.id))
                     return
             if handler:
                 argspec = inspect.signature(handler)
@@ -2851,8 +2856,8 @@ class AutoMod(discord.Client):
                 for emote in self.emote_list:
                     if emote in message.clean_content.lower():
                         await self.safe_delete_message(message)
-                        await self._write_to_modlog('deleted the message of ', message.author, message.server,
-                                                    '*twitch emote* ***{}*** *detected*```{}```'.format(emote,
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    '**twitch emote** `{}` **detected**'.format(emote,
                                                                                                         message.clean_content[
                                                                                                         :150]),
                                                     message.channel)
@@ -2871,7 +2876,7 @@ class AutoMod(discord.Client):
                     if this[3] > 5:
                         action = self.server_index[message.server.id][6]
                         if 'kick' in action:
-                            await self._write_to_modlog('kicked', message.author, message.server,
+                            await self._write_to_modlog('Kick', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
                             try:
                                 await self.kick(message.author)
@@ -2881,7 +2886,7 @@ class AutoMod(discord.Client):
                             except:
                                 print('Cannot kick, no permissions : {}'.format(message.server.name))
                         elif 'ban' in action:
-                            await self._write_to_modlog('banned', message.author, message.server,
+                            await self._write_to_modlog('Ban', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
                             try:
                                 await self.ban(message.author, 7)
@@ -2891,7 +2896,7 @@ class AutoMod(discord.Client):
                             except:
                                 print('Cannot ban, no permissions : {}'.format(message.server.name))
                         elif 'mute' in action:
-                            await self._write_to_modlog('muted', message.author, message.server,
+                            await self._write_to_modlog('Mute', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
                             mutedrole = discord.utils.get(message.server.roles, name='Muted')
                             try:
@@ -2903,20 +2908,20 @@ class AutoMod(discord.Client):
                             except:
                                 print('Cannot mute, no permissions : {}'.format(message.server.name))
                         else:
-                            await self._write_to_modlog('flagged', message.author, message.server,
+                            await self._write_to_modlog('Flagged', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
                         return
                     if dis is 1:
-                        await self._write_to_modlog('deleted the message of ', message.author, message.server,
-                                                    '*duplicate message detected*```{}```'.format(
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    '**duplicate message detected**'.format(
                                                             message.clean_content[:150]), message.channel)
                     elif dis is 2:
-                        await self._write_to_modlog('deleted the message of ', message.author, message.server,
-                                                    '*spam-esque duplicate characters detected*```{}```'.format(
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    '**spam-esque duplicate characters detected**'.format(
                                                             message.clean_content[:150]), message.channel)
                     else:
-                        await self._write_to_modlog('deleted the message of ', message.author, message.server,
-                                                    '*rate limiting*```{}```'.format(message.clean_content[:150]),
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    '**rate limiting**'.format(message.clean_content[:150]),
                                                     message.channel)
                     this[0] = now
                 else:
@@ -2934,8 +2939,8 @@ class AutoMod(discord.Client):
                 for emote in self.emote_list:
                     if emote in message.clean_content.lower():
                         await self.safe_delete_message(message)
-                        await self._write_to_modlog('deleted the message of ', message.author, message.server,
-                                                    '*twitch emote* **{}** *detected*```{}```'.format(emote,
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    '**twitch emote** `{}` **detected**'.format(emote,
                                                                                                       message.clean_content[
                                                                                                       :150]),
                                                     message.channel)
@@ -2952,7 +2957,7 @@ class AutoMod(discord.Client):
                     if config[11][message.author.id][3] > 3:
                         action = self.server_index[message.server.id][6]
                         if 'kick' in action:
-                            await self._write_to_modlog('kicked', message.author, message.server,
+                            await self._write_to_modlog('Kick', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
                             try:
                                 await self.kick(message.author)
@@ -2962,7 +2967,7 @@ class AutoMod(discord.Client):
                             except:
                                 print('Cannot kick, no permissions : {}'.format(message.server.name))
                         elif 'ban' in action:
-                            await self._write_to_modlog('banned', message.author, message.server,
+                            await self._write_to_modlog('Ban', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
                             try:
                                 await self.ban(message.author, 7)
@@ -2972,7 +2977,7 @@ class AutoMod(discord.Client):
                             except:
                                 print('Cannot ban, no permissions : {}'.format(message.server.name))
                         elif 'mute' in action:
-                            await self._write_to_modlog('muted', message.author, message.server,
+                            await self._write_to_modlog('Mute', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
                             mutedrole = discord.utils.get(message.server.roles, name='Muted')
                             try:
@@ -2984,20 +2989,20 @@ class AutoMod(discord.Client):
                             except:
                                 print('Cannot mute, no permissions : {}'.format(message.server.name))
                         else:
-                            await self._write_to_modlog('flagged', message.author, message.server,
+                            await self._write_to_modlog('Flagged', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
                         return
                     if dis is 1:
-                        await self._write_to_modlog('deleted the message of ', message.author, message.server,
-                                                    'duplicate message detected```{}```'.format(
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    '**duplicate message detected**'.format(
                                                             message.clean_content[:150]), message.channel)
                     elif dis is 2:
-                        await self._write_to_modlog('deleted the message of ', message.author, message.server,
-                                                    'spam-esque duplicate characters detected```{}```'.format(
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    '**spam-esque duplicate characters detected**'.format(
                                                             message.clean_content[:150]), message.channel)
                     else:
-                        await self._write_to_modlog('deleted the message of ', message.author, message.server,
-                                                    'rate limiting```{}```'.format(message.clean_content[:150]),
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    '**rate limiting**'.format(message.clean_content[:150]),
                                                     message.channel)
                 else:
                     if not flag:
@@ -3038,8 +3043,8 @@ class AutoMod(discord.Client):
                         await self.safe_send_message(message.author,
                                                      'Your message `{}` has been deleted and you\'ve been kicked for breaking the word filter on `{}`!'.format(
                                                              message.clean_content, message.server.name))
-                        await self._write_to_modlog('kicked', message.author, message.server,
-                                                    'the use of a blacklisted word : `{}`'.format(
+                        await self._write_to_modlog('Kick', message.author, message.server,
+                                                    'the use of a blacklisted word: `{}`'.format(
                                                             message.clean_content), message.channel)
                     except discord.Forbidden:
                         print('Cannot kick, no permissions : {}'.format(message.server.name))
@@ -3052,8 +3057,8 @@ class AutoMod(discord.Client):
                         await self.safe_send_message(message.author,
                                                      'Your message `{}` has been deleted and you\'ve been banned for breaking the word filter on `{}`!'.format(
                                                              message.clean_content, message.server.name))
-                        await self._write_to_modlog('banned', message.author, message.server,
-                                                    'the use of a blacklisted word : `{}`'.format(
+                        await self._write_to_modlog('Ban', message.author, message.server,
+                                                    'the use of a blacklisted word: `{}`'.format(
                                                             message.clean_content), message.channel)
                     except discord.Forbidden:
                         print('Cannot ban, no permissions : {}'.format(message.server.name))
@@ -3070,8 +3075,8 @@ class AutoMod(discord.Client):
                         await self.safe_send_message(message.author,
                                                      'Your message `{}` has been deleted and you\'ve been muted for breaking the word filter on `{}`!'.format(
                                                              message.clean_content, message.server.name))
-                        await self._write_to_modlog('muted', message.author, message.server,
-                                                    'the use of a blacklisted word : `{}`'.format(
+                        await self._write_to_modlog('Mute', message.author, message.server,
+                                                    'the use of a blacklisted word: `{}`'.format(
                                                             message.clean_content), message.channel)
                     except discord.Forbidden:
                         print('Cannot mute, no permissions : {}'.format(message.server.name))
@@ -3083,8 +3088,8 @@ class AutoMod(discord.Client):
                         await self.safe_send_message(message.author,
                                                      'Your message `{}` has been deleted for breaking the word filter on `{}`!'.format(
                                                              message.clean_content, message.server.name))
-                        await self._write_to_modlog('deleted', message.author, message.server,
-                                                    'the use of a blacklisted word : `{}`'.format(
+                        await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                    'the use of a blacklisted word: `{}`'.format(
                                                             message.clean_content), message.channel)
                     except:
                         pass

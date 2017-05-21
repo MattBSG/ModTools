@@ -28,6 +28,7 @@ if [ -f /etc/lsb-release ]; then
 elif [ -f /etc/debian_version ]; then
     os=Debian
     ver=$(cat /etc/debian_version)
+	installer=0
 else
     os=$(uname -s)
     ver=$(uname -r)
@@ -46,16 +47,6 @@ if [ "$levenshtein" = 1 ]; then
 printf "\e[1;31mThis OS is not supported in installing python-Levenshtein.\e[0m This will not affect the bot.\n"
 fi
 
-echo -e "This script will install ModTools in your home directory for your user \n \nThis action will use about 110mb of storage. Would you like to continue?"
-# prompt user if they want to install the bot or not
-while true; do
-    read -p "[y/n]: " yn
-    case $yn in
-        [Yy]* ) clear; echo Running installer; sleep 2; break;;
-        [Nn]* ) echo Quitting; exit;;
-        * ) echo "Invalid Selection. Please answer y for yes or n for no.";;
-    esac
-done
 
 if [ "$os" = "Ubuntu" ]; then
 

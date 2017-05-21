@@ -44,12 +44,6 @@ def load_file(filename):
         return []
 
 
-def write_file(filename, contents):
-    with open(filename, 'w') as f:
-        for item in contents:
-            f.write(str(item))
-            f.write('\n')
-
 def write_json_norm(filename, contents):
     with open(filename, 'w') as outfile:
         outfile.write(json.dumps(contents, indent=2))
