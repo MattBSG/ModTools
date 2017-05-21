@@ -21,7 +21,7 @@ from automod.config import Config
 from automod.register import Register
 from automod.response import Response
 from automod.version import VERSION
-from automod.utils import load_json, write_json, load_file, write_file, compare_strings, do_slugify, clean_string, \
+from automod.utils import load_json, write_json, load_file, compare_strings, do_slugify, clean_string, \
     snowflake_time, strict_compare_strings, load_json_async, write_json_norm
 
 from .exceptions import CommandError
@@ -851,18 +851,18 @@ class AutoMod(discord.Client):
                     return
                 if before.nick and after.nick:
                     await self.safe_send_message(discord.Object(id=config[9]),
-                                                 '`[{}]` ⚠ **{}#{}**\'s nickname has changed. `{}`->`{}`'.format(
+                                                 '`[{}]` ⚠ `{}#{}` *changed their nickname* `{}`->`{}`'.format(
                                                          datetime.utcnow().strftime("%H:%M:%S"), clean_string(before.name),
                                                          after.discriminator, clean_string(before.nick),
                                                          clean_string(after.nick)), server=before.server)
                 elif before.nick:
                     await self.safe_send_message(discord.Object(id=config[9]),
-                                                 '`[{}]` ⚠ **{}#{}**\'s nickname was removed. Was `{}`'.format(
+                                                 '`[{}]` ⚠ `{}#{}` *removed their nickname* `{}`'.format(
                                                          datetime.utcnow().strftime("%H:%M:%S"), clean_string(before.name),
                                                          after.discriminator, clean_string(before.nick)), server=before.server)
                 elif after.nick:
                     await self.safe_send_message(discord.Object(id=config[9]),
-                                                 '`[{}]` ⚠ **{}#{}** now has a nickname. `{}`'.format(
+                                                 '`[{}]` ⚠ `{}#{}` *added a nickname* `{}`'.format(
                                                          datetime.utcnow().strftime("%H:%M:%S"), clean_string(before.name),
                                                          after.discriminator, clean_string(after.nick)), server=before.server)
             elif log_flag == 'vchanchange':
@@ -1802,10 +1802,7 @@ class AutoMod(discord.Client):
         Replies with "PONG!"; Use to test bot's responsiveness
         """
         if await self.has_roles(message.channel, author, server, command='ping'):
-            if author.id == '125233822760566784':
-                return Response('Hi Dad! :middle_finger:', reply=True)
-            else:
-                return Response('PONG!', reply=True)
+            return Response('PONG!', reply=True)
 
 #    async def cmd_olduserinfoplsnouse(self, message, mentions, author, server, option=None):
 #        """
@@ -2299,7 +2296,11 @@ class AutoMod(discord.Client):
                     self.globalbans.add(discord.utils.get(self.servers, id=key).id)
                 else:
                     print('I did fuck all')
-                write_file('config/globalbans.txt', self.globalbans)
+                print('Server %s was blacklisted' % key)
+                sban = open('config/globalbans.txt', 'a')
+                self.globalbans = str(self.globalbans)[5:0] + key + '\n'
+                sban.write(self.globalbans)
+                sban.close()
                 return Response(':thumbsup:', reply=True)
             except:
                 return Response(':thumbsdown:', reply=True)
@@ -2422,8 +2423,8 @@ class AutoMod(discord.Client):
         """
         blahblahblah
         """
-        return Response('Here is my OAuth URL!:\n{}'
-                        ''.format(discord.utils.oauth_url( BOT_USER_ACCOUNT, permissions=discord.Permissions.all())),
+        return Response('Here is my OAuth URL!:\n<{}>'
+                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
                         reply=True)
 
     async def cmd_joinserver(self):
@@ -2431,8 +2432,8 @@ class AutoMod(discord.Client):
         Usage {command_prefix}joinserver [Server Link]
         Asks the bot to join a server.
         """
-        return Response('I am quite happy you would like me to join one of your servers! Just remember that to function properly, I must have **administrator** permissions. Here is my invite link:\n{}'
-                        ''.format(discord.utils.oauth_url( BOT_USER_ACCOUNT, permissions=discord.Permissions.all())),
+        return Response('I am quite happy you would like me to join one of your servers! Just remember that to function properly, I must have **administrator** permissions. Here is my invite link:\n<{}>'
+                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
                         reply=True)
 
     async def on_server_join(self, server):
