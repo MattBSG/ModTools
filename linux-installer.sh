@@ -66,12 +66,7 @@ if [ "$os" = "Ubuntu" ]; then
 	sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
 	wget https://bootstrap.pypa.io/get-pip.py
 	sudo python3.5 get-pip.py
-	sudo pip install aiohttp
-	sudo pip install fuzzywuzzy
-	sudo pip install aiofiles
-	sudo pip install Pillow
-	python3.5 -m pip install -U discord.py
-	sudo pip install python-slugify
+	sudo pip install -U -r requirements.txt
 	if [ "$levenshtein" = 0 ]; then
 		sudo pip install python-Levenshtein
 	fi
@@ -88,13 +83,8 @@ elif [ "$os" = "Debian" ]; then
 	sudo make altinstall
 	cd ..
 	pip3.5 install --upgrade pip
-	pip3.5 install aiohttp
-	pip3.5 install fuzzywuzzy
-	pip3.5 install aiofiles
+	pip3.5 install -U -r requirements.txt
 	pip3.5 install python-Levenshtein
-	pip3.5 install Pillow
-	python3.5 -m pip install -U discord.py
-	pip3.5 install python-slugify
 fi
 
 # cleanup; too tired to think of better solution
