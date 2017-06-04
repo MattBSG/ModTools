@@ -72,6 +72,7 @@ if [ "$os" = "Ubuntu" ]; then
 	fi
 
 elif [ "$os" = "Debian" ]; then
+	apt-get update
 	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip -y
 	mkdir installation-files
 	pushd installation-files
