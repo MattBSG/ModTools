@@ -66,20 +66,17 @@ if [ "$os" = "Ubuntu" ]; then
 	sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
 	wget https://bootstrap.pypa.io/get-pip.py
 	sudo python3.5 get-pip.py
-	sudo pip install aiohttp
-	sudo pip install fuzzywuzzy
-	sudo pip install aiofiles
-	sudo pip install Pillow
-	python3.5 -m pip install -U discord.py
-	sudo pip install python-slugify
+	sudo pip install -U -r requirements.txt
 	if [ "$levenshtein" = 0 ]; then
 		sudo pip install python-Levenshtein
 	fi
+	cd ..
 
 elif [ "$os" = "Debian" ]; then
+	apt-get update
 	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip -y
 	mkdir installation-files
-	pushd installation-files
+	cd installation-files
 	wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
 	tar -xvf Python-3.5.2.tgz
 	cd Python-3.5.2
@@ -87,14 +84,11 @@ elif [ "$os" = "Debian" ]; then
 	sudo make
 	sudo make altinstall
 	cd ..
+	cd ..
+	wget https://cdn.mattbsg.xyz/requirements.txt
 	pip3.5 install --upgrade pip
-	pip3.5 install aiohttp
-	pip3.5 install fuzzywuzzy
-	pip3.5 install aiofiles
+	pip3.5 install -U -r requirements.txt
 	pip3.5 install python-Levenshtein
-	pip3.5 install Pillow
-	python3.5 -m pip install -U discord.py
-	pip3.5 install python-slugify
 fi
 
 # cleanup; too tired to think of better solution
@@ -107,7 +101,7 @@ fi
 # Hand off to config shell file
 
 clear
-chmod +x config.sh
+chmod +x linux-config.sh
 ./linux-config.sh
 # This file will delete it-self as it is unnessecary to keep the file after it is used
 rm linux-installer.sh
