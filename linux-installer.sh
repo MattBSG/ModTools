@@ -70,6 +70,7 @@ if [ "$os" = "Ubuntu" ]; then
 	if [ "$levenshtein" = 0 ]; then
 		sudo pip install python-Levenshtein
 	fi
+	cd ..
 
 elif [ "$os" = "Debian" ]; then
 	apt-get update
