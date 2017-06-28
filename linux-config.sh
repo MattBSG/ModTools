@@ -3,7 +3,7 @@
 # https://stackoverflow.com/a/37847838
 export NCURSES_NO_UTF8_ACS=1
 
-dialog --yesno "This file is used to configure AutoMod and the related settings. Do not run this if you have previously configured the options! Would you like to start configuration?" 8 64
+dialog --keep-tite --yesno "This file is used to configure AutoMod and the related settings. Do not run this if you have previously configured the options! Would you like to start configuration?" 8 64
 
 # 1 - Cancel pressed. 255 - ESC pressed.
 response=$?
@@ -16,7 +16,7 @@ esac
 OUTPUT="/tmp/input.txt"
 >$OUTPUT
 
-dialog --inputbox "Ok, our dependancies should have been installed. Lets continue to configuration. Well confirm your options later on.\n\nGo to https://github.com/MattBSG/ModTools/wiki/Configuration\n\nFollow the instructions to create an application and bot account. Then enter the account's CLIENT ID in the following prompt. Make sure it is the CORRECT user id or ModTools will give the wrong invite link!\n\nEnter the userid of your bot account:" 32 64 2>$OUTPUT
+dialog --keep-tite --inputbox "Ok, our dependancies should have been installed. Lets continue to configuration. Well confirm your options later on.\n\nGo to https://github.com/MattBSG/ModTools/wiki/Configuration\n\nFollow the instructions to create an application and bot account. Then enter the account's CLIENT ID in the following prompt. Make sure it is the CORRECT user id or ModTools will give the wrong invite link!\n\nEnter the userid of your bot account:" 32 64 2>$OUTPUT
 
 response=$?
 case $response in
@@ -25,7 +25,7 @@ case $response in
 esac
 botid=$(<$OUTPUT)
 
-dialog --inputbox "On the same page as you got your userid you should see a field that says 'Token'.\n\nClick the 'Click to reveal' button, then copy and paste the ENTIRE string at the next prompt.\n\nEnter the token of your bot account:" 32 64 2>$OUTPUT
+dialog --keep-tite --inputbox "On the same page as you got your userid you should see a field that says 'Token'.\n\nClick the 'Click to reveal' button, then copy and paste the ENTIRE string at the next prompt.\n\nEnter the token of your bot account:" 32 64 2>$OUTPUT
 
 response=$?
 case $response in
@@ -34,7 +34,7 @@ case $response in
 esac
 bottoken=$(<$OUTPUT)
 
-dialog --inputbox "Now we need to get your userid.\n\nFind it by mentioning your self with a backslash before.\n\nFor example: \@DamFam#1234 will read something like <@66516516512568135>\n\nYou would enter '66516516512568135' without quotes. This will be set as the bot's ownerid.\n\nPlease enter YOUR userid:" 32 64 2>$OUTPUT
+dialog --keep-tite --inputbox "Now we need to get your userid.\n\nFind it by mentioning your self with a backslash before.\n\nFor example: \@DamFam#1234 will read something like <@66516516512568135>\n\nYou would enter '66516516512568135' without quotes. This will be set as the bot's ownerid.\n\nPlease enter YOUR userid:" 32 64 2>$OUTPUT
 
 response=$?
 case $response in
@@ -43,7 +43,7 @@ case $response in
 esac
 ownerid=$(<$OUTPUT)
 
-dialog --inputbox "Last but not least, we need to know what you want to use for the command prefix.\n\nFor example: In !!help, !! is the command prefix.\n\nPlease enter what you would like for your command prefix (!! is the default):" 32 64 2>$OUTPUT
+dialog --keep-tite --inputbox "Last but not least, we need to know what you want to use for the command prefix.\n\nFor example: In !!help, !! is the command prefix.\n\nPlease enter what you would like for your command prefix (!! is the default):" 32 64 2>$OUTPUT
 
 response=$?
 case $response in
