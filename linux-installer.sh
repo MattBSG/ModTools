@@ -35,14 +35,16 @@ else
 fi
 
 if [ "$installer" = 1 ]; then
-		dialog --colors --msgbox "This system is running an unsupported OS.\n\nDetails: OS: $os \n         Version: $ver\n\n\Z1The installer will not continue. Please reference the wiki for a list of supported operating systems." 16 64
+		echo -e "This system is running an unsupported OS. Details: \nOS: $os \nVersion: $ver"
+		echo
+		printf "\e[1;31mThe installer will not continue. Please reference the wiki for a list of supported operating systems. Exiting...\e[0m\n"
 		exit 1
 fi
 
 clear
 
 if [ "$levenshtein" = 1 ]; then
-printf "\e[1;31mThis OS is not supported in installing python-Levenshtein.\e[0m This will not affect the bot.\n"
+		printf "\e[1;31mThis OS is not supported in installing python-Levenshtein.\e[0m This will not affect the bot.\n"
 fi
 
 
