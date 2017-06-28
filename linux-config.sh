@@ -63,7 +63,7 @@ OwnerID = $ownerid
 [Chat]
 CommandPrefix = $prefix" | cat - >> config/options.txt
 
-dialog --no-mouse --msgbox "Awesome! You finished configuration of the bot. Lets verify that all the information you entered is correct.\n\nHere are the options you set (inside quotation marks):\n\nBot User ID = '$botid'\nBot Token = '$bottoken'\nYour ID = '$ownerid'\nCommand Prefix = '$prefix'\n\nConfiguration complete! If there is any incorrect information, you will need to manually edit it in either automod/constants.py or config/configs.txt\n\nYou can start your bot by running 'python3.5 run.py'\n\nFor more information refer to the wiki." 32 64
+dialog --no-mouse --keep-tite --msgbox "Awesome! You finished configuration of the bot. Lets verify that all the information you entered is correct.\n\nHere are the options you set (inside quotation marks):\n\nBot User ID = '$botid'\nBot Token = '$bottoken'\nYour ID = '$ownerid'\nCommand Prefix = '$prefix'\n\nConfiguration complete! If there is any incorrect information, you will need to manually edit it in either automod/constants.py or config/configs.txt\n\nYou can start your bot by running 'python3.5 run.py'\n\nFor more information refer to the wiki." 32 64
 
 # This file will delete it-self since if it is re-run then it will entirely break the config and need to be repaired
 rm linux-config.sh
