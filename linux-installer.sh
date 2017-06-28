@@ -66,7 +66,7 @@ if [ "$os" = "Ubuntu" ]; then
 	# Working out of the users current directory
 	mkdir installation-files
 	cd installation-files
-	sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
+	sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev dialog -y
 	wget https://bootstrap.pypa.io/get-pip.py
 	sudo python3.5 get-pip.py
 	sudo pip install -U -r requirements.txt
