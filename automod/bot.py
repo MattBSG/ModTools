@@ -2749,6 +2749,7 @@ class AutoMod(discord.Client):
                                                      message.server.name))
                 return
 
+
             for arg in list(args):
                 if arg.startswith('<@'):
                     args.remove(arg)
@@ -2873,8 +2874,8 @@ class AutoMod(discord.Client):
                     await self.safe_delete_message(message)
                     this[3] += 1
                     self.action_dict['actions_taken'] += 1
+                    action = self.server_index[message.server.id][6]
                     if this[3] > 5:
-                        action = self.server_index[message.server.id][6]
                         if 'kick' in action:
                             await self._write_to_modlog('Kick', message.author, message.server,
                                                         'multiple violations of anti spam filters', message.channel)
@@ -2923,6 +2924,9 @@ class AutoMod(discord.Client):
                         await self._write_to_modlog('Deleted the message', message.author, message.server,
                                                     '**rate limiting**'.format(message.clean_content[:150]),
                                                     message.channel)
+                        await self.safe_send_message(message.author,
+                                                             ':exclamation: **You are being rate limited.** Please slow your message sends to {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(
+                                                                     message.server.name, action))
                     this[0] = now
                 else:
                     if not flag:
