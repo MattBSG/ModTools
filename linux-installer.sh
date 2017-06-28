@@ -35,9 +35,7 @@ else
 fi
 
 if [ "$installer" = 1 ]; then
-		echo -e "This system is running an unsupported OS. Details: \nOS: $os \nVersion: $ver"
-		echo
-		printf "\e[1;31mThe installer will not continue. Please reference the wiki for a list of supported operating systems. Exiting...\e[0m\n"
+		dialog --colors --msgbox "This system is running an unsupported OS.\n\nDetails: OS: $os \n         Version: $ver\n\n\Z1The installer will not continue. Please reference the wiki for a list of supported operating systems." 16 64
 		exit 1
 fi
 
