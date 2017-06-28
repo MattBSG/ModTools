@@ -1,0 +1,16 @@
+[Credentials]
+Token = --token--
+
+[Permissions]
+OwnerID = --woer id--
+
+[Chat]
+CommandPrefix = --prefix--
+[Credentials]
+Token = BOT TOKEN
+
+[Permissions]
+OwnerID = OWNER ID
+
+[Chat]
+CommandPrefix = PREFIX HERE
