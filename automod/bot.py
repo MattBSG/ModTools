@@ -2916,17 +2916,17 @@ class AutoMod(discord.Client):
                         await self._write_to_modlog('Deleted the message', message.author, message.server,
                                                     '**duplicate message detected**'.format(
                                                             message.clean_content[:150]), message.channel)
+                        await self.safe_send_message(message.author,':exclamation: **You are sending duplicate messages.** Please refrain from doing this on {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
                     elif dis is 2:
                         await self._write_to_modlog('Deleted the message', message.author, message.server,
                                                     '**spam-esque duplicate characters detected**'.format(
                                                             message.clean_content[:150]), message.channel)
+                        await self.safe_send_message(message.author,':exclamation: **You are sending spam like duplicate characters.** Please refrain from doing this on {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
                     else:
                         await self._write_to_modlog('Deleted the message', message.author, message.server,
                                                     '**rate limiting**'.format(message.clean_content[:150]),
                                                     message.channel)
-                        await self.safe_send_message(message.author,
-                                                             ':exclamation: **You are being rate limited.** Please slow your message sends to {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(
-                                                                     message.server.name, action))
+                        await self.safe_send_message(message.author,':exclamation: **You are being rate limited.** Please slow your message sends to {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
                     this[0] = now
                 else:
                     if not flag:
