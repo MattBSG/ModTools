@@ -12,7 +12,7 @@ echo
 echo      Go to https://github.com/MattBSG/ModTools/wiki/Configuration
 echo
 echo
-echo Follow the instructions to create an application and bot account. Then enter the accounts USER ID in the following prompt. Make sure it is the CORRECT user id or ModTools will give the wrong invite link!
+echo Follow the instructions to create an application and bot account. Then enter the account\'s CLIENT ID in the following prompt. Make sure it is the CORRECT user id or ModTools will give the wrong invite link!
 echo
 echo
 echo Enter the userid of your bot account \(ie. 237760867968614402\):
