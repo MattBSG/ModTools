@@ -1,8 +1,3 @@
-# Fixes bug with PUTTY relating to line drawing charcters used by dialog.
-# https://www.novell.com/support/kb/doc.php?id=7015165
-# https://stackoverflow.com/a/37847838
-export NCURSES_NO_UTF8_ACS=1
-
 arch=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
 # this is just a mess, leave me be
 if [ -f /etc/lsb-release ]; then
@@ -40,7 +35,9 @@ else
 fi
 
 if [ "$installer" = 1 ]; then
-		dialog --colors --msgbox "This system is running an unsupported OS.\n\nDetails: OS: $os \n         Version: $ver\n\n\Z1The installer will not continue. Please reference the wiki for a list of supported operating systems." 16 64
+		echo -e "This system is running an unsupported OS. Details: \nOS: $os \nVersion: $ver"
+		echo
+		printf "\e[1;31mThe installer will not continue. Please reference the wiki for a list of supported operating systems. Exiting...\e[0m\n"
 		exit 1
 fi
 
