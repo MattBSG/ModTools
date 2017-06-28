@@ -74,7 +74,7 @@ if [ "$os" = "Ubuntu" ]; then
 
 elif [ "$os" = "Debian" ]; then
 	apt-get update
-	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip -y
+	sudo apt-get install build-essential libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl unzip dialog -y
 	mkdir installation-files
 	cd installation-files
 	wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz
