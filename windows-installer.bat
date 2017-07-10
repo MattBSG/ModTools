@@ -99,7 +99,7 @@ echo.
 echo Last but not least go ahead you need to select what you would like
 echo your command prefix to be.
 echo.
-echo AKA in !!ping "!!" is the prefix and goes before every command
+echo AKA in ^^!^^!ping "^!^!" is the prefix and goes before every command
 echo.
 echo.
 set /p prefix="Command Prefix: "
