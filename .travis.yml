@@ -2,10 +2,9 @@ sudo: true
 dist: trusty
 language: python
 notifications:
-notifications:
   discord:
     channels:
-      - secure: "fxq0uQtEw4x02BP0Vy0zlJqprW7hhF9LbIyJGvUTutczMcGaPsIqHo5ZjxbbVd8ieE68kUAcaBtXw/u2UiOew8ZYU+uHjbI72QfNMNPa6bUhGhMAG5jhDK7ENuCh+r/9gdhkPj0LJwZSIpH9EWFiwIlYOhRdZDkYvJY8jLgWr5Uvgqd4MKahqgpO2z2ue+9zbWoZfqXdRXsuwBWh4kEMiomg75CRs/vmOkZfO/+e69F6kpwu6wTL7374CjyD6S61xho4hEO4TPgdcQ4L+trpJxn5a8KtJAtEzUoyM7PBsVB1x5ok8NtPjnvgMAsvKP1YfH48fl+Exmc36hacLzqQIjmYxANluWqhpPINO0O3XpPECIY/nl5LO6dgyiZ5KF0r7M8dWddHiFHRxN/r2CmcLGtLzpNBVI1m03MOMEOg7XQWuiefa1s3pvJXr9n8uC5bc/Z4/FKgR93R6YBEm199s615wGJxSnF0nvbKXxMyc2jDkkStkR8pIZj4JgTvMQwHCryOEnrjbbfnw2bVhqWJPLxB41aOies4XMY1eILL5XBdIEI7uKnNo7Qk7D+PoyuAhLnG5UBZG23Ij4mB+J0d/GnRVG6tpqM7/b9IWx6V/bSoHzr7BxGNkzIhnmPVdhACNdhmBkaXBfrIOE4wyWjaA24RaPbqYELJxJn78BKjo+4="
+      - secure: "jD9irFzvG7cLtzXn2IzZOx2UKUCVS1Moim9m0f8FPlcdaT1+0jJL1ejVDzKL19EzOGHD06Il1oeBPBYIRPecKsQ5PDb/98jUQ/1Pq4y9mrUnFjjDSP11iWgoJEOYkdTvCjWQirMHOWME3ZH6n1mNHExLtZw1HLHNMe7q4/FyFLla0NzdjDAUnVVg22JaF0/8g2EK/DSIG7Z8VXTby8ve0pEjLoIUUpwd0E4WdEOvWtUq7oVJadBtBRRg8u3k1BTcjxzmdtCYX5Fmo1G5ZErPdixLP4CMgi92ZoYGbEanDPzoiqpQeb+yJim/Z6iOeqJC4+64Yh2UjINDk+w6lMlI4ijnDCmQORevHDzbsvxj6lCOAHzPl5rhxY/ChXGCS/zc+sKWYNBEZwme451Jxf+xIUqNginq8i0nsD+1pyJYbNrf8ppHatZPTrBDEULNlGw2PM7BNj4FNEPACWxIyKI3pUUH5TU9ONMazKa9o8dPf1diffUIiDJiH3ytfZdAR/iHElqmxwZ7uan47jkTSUe+1sDEAovddGoV/rakNvnjiuDn2oA6pikMlS7mjg8c2Yr+OIEyvGK+ks80+FYA4an0OT7kd33/VsokW3KWfyl4STqrhKY7gk21dHIqeCC/k2mwGB4XAKxJyLEoQoFvQBYeXMfF5gOb9ysKupQD90Tt+Cs="
 
 before_install:
   - echo
@@ -16,7 +15,6 @@ before_install:
   - sudo apt-get update
 
 install:
-  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_iv -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
   - echo
   - echo Installing python dependancies
   - echo
@@ -34,7 +32,7 @@ before_script:
   - echo Beginning prep for testing
   - echo
   - echo Decrypting script...
-  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_iv -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
+  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_key -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
 
 script:
   - echo Script
