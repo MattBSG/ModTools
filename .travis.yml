@@ -1,0 +1,38 @@
+sudo: true
+dist: trusty
+language: python
+
+before_install:
+  - echo
+  - echo Installing system dependancies
+  - echo
+  - sudo add-apt-repository ppa:fkrull/deadsnakes -y
+  - sudo add-apt-repository ppa:mc3man/trusty-media -y
+  - apt-get update
+  - sudo apt-get upgrade -y
+
+install:
+  - echo
+  - echo Installing python dependancies
+  - echo
+  - mkdir installation-files
+  - cd installation-files
+  - sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
+  - wget https://bootstrap.pypa.io/get-pip.py
+  - sudo python3.5 get-pip.py
+  - cd ..
+  - sudo pip install -U -r requirements.txt
+  - rm -rfv installation-files
+
+before_script:
+  - echo
+  - echo Beginning prep for testing
+  - echo
+  - echo Pulling script...
+  - echo DO SOMETHING HERE
+
+script:
+  - echo Script
+
+after_success:
+  - echo SUCCESS (not really)
