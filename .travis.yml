@@ -1,6 +1,13 @@
 sudo: true
 dist: trusty
 language: python
+notifications:
+  webhooks: $WEBHOOKURL
+  	on_success: change
+  	on_failure: change
+  	on_start: always
+  	on_cancel: change
+  	on_error: change
 
 before_install:
   - echo
@@ -9,6 +16,9 @@ before_install:
   - sudo add-apt-repository ppa:fkrull/deadsnakes -y
   - sudo add-apt-repository ppa:mc3man/trusty-media -y
   - sudo apt-get update
+  - cd travic-ci
+  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_iv -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
+  - cd ..
 
 install:
   - echo
@@ -20,7 +30,7 @@ install:
   - wget https://bootstrap.pypa.io/get-pip.py
   - sudo python3.5 get-pip.py
   - cd ..
-  - sudo pip install -U -r requirements.txt
+  - sudo python3.5 -m pip install --upgrade -r requirements.txt
   - rm -rfv installation-files
 
 before_script:
