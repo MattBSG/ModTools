@@ -2,12 +2,10 @@ sudo: true
 dist: trusty
 language: python
 notifications:
-  webhooks: 
-    urls:
-      - secure: "Jcz8rhDG0p+DoE3XUcNKsnMp+0ont3eS9kF5QIAFvNBTfH11UuyOfuLTpDJYEOkaGnfOZaV4NQ9mv/7wlCTYjHx90q7F1CucyPIoRoxGK0dopwOddusLF+Yl6ngp4Fte+tn8f5eRuah8+CGDIgaH7690++t5TJDrZ8v9G9ZZmloU6u/4zJZl8ZqKhv35EsDMnXjDtkbEqpxqM6FLvU/vqaUAIiXXkpseht5luFupU5+VHHa4jtNPOu2KIG9zFIDVDU9HvLdMBtwyOG1DOYePD4XXR5szyTEiu90PwzySu9Mg7zNXr/88jB9nDvwMNm9WRNRB6G6Qb5OGSmc/EGYQHplaxHXo9adFzB0ZbP/g7UihD6F/h4IXH+Hhrzme1eQ6NnQqYsa8cJL1/k5PhbXfwU2diS7M+sihQhshJNsUf8fP2kjWq5Hij7KFxeSNZ982GGJzz9SpwZSA7FZfgQnvyKWrJnJRVT/nTpYReyarJjrutfGlt23D9TGFcAh86DaXn1YymM5p7tRnm0erInj6fdENMttAn+9gHDUvWI2EjMDuTKp8SGZAx1vxmogXQ8pNg3BgUEj4m6GN5Ibe4Mcxo2bQ0MDYwIccNsx2+PlQl/nZ9Zn1YbFfGJNPftRl8c2GHcLVJ7UsVuU8Wh5T1GjOiCFd5G5wDjRkxWek/Qip2b8="
-    on_success: change
-    on_failure: always
-    on_start: change
+notifications:
+    discord:
+      channels:
+        - secure: "fxq0uQtEw4x02BP0Vy0zlJqprW7hhF9LbIyJGvUTutczMcGaPsIqHo5ZjxbbVd8ieE68kUAcaBtXw/u2UiOew8ZYU+uHjbI72QfNMNPa6bUhGhMAG5jhDK7ENuCh+r/9gdhkPj0LJwZSIpH9EWFiwIlYOhRdZDkYvJY8jLgWr5Uvgqd4MKahqgpO2z2ue+9zbWoZfqXdRXsuwBWh4kEMiomg75CRs/vmOkZfO/+e69F6kpwu6wTL7374CjyD6S61xho4hEO4TPgdcQ4L+trpJxn5a8KtJAtEzUoyM7PBsVB1x5ok8NtPjnvgMAsvKP1YfH48fl+Exmc36hacLzqQIjmYxANluWqhpPINO0O3XpPECIY/nl5LO6dgyiZ5KF0r7M8dWddHiFHRxN/r2CmcLGtLzpNBVI1m03MOMEOg7XQWuiefa1s3pvJXr9n8uC5bc/Z4/FKgR93R6YBEm199s615wGJxSnF0nvbKXxMyc2jDkkStkR8pIZj4JgTvMQwHCryOEnrjbbfnw2bVhqWJPLxB41aOies4XMY1eILL5XBdIEI7uKnNo7Qk7D+PoyuAhLnG5UBZG23Ij4mB+J0d/GnRVG6tpqM7/b9IWx6V/bSoHzr7BxGNkzIhnmPVdhACNdhmBkaXBfrIOE4wyWjaA24RaPbqYELJxJn78BKjo+4="
 
 before_install:
   - echo
@@ -16,11 +14,11 @@ before_install:
   - sudo add-apt-repository ppa:fkrull/deadsnakes -y
   - sudo add-apt-repository ppa:mc3man/trusty-media -y
   - sudo apt-get update
-  - cd travic-ci
-  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_iv -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
-  - cd ..
 
 install:
+  - cd travis-ci
+  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_iv -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
+  - cd ..
   - echo
   - echo Installing python dependancies
   - echo
