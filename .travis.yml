@@ -2,11 +2,11 @@ sudo: true
 dist: trusty
 language: python
 notifications:
-  discord:
-    channels:
-      - secure: "jD9irFzvG7cLtzXn2IzZOx2UKUCVS1Moim9m0f8FPlcdaT1+0jJL1ejVDzKL19EzOGHD06Il1oeBPBYIRPecKsQ5PDb/98jUQ/1Pq4y9mrUnFjjDSP11iWgoJEOYkdTvCjWQirMHOWME3ZH6n1mNHExLtZw1HLHNMe7q4/FyFLla0NzdjDAUnVVg22JaF0/8g2EK/DSIG7Z8VXTby8ve0pEjLoIUUpwd0E4WdEOvWtUq7oVJadBtBRRg8u3k1BTcjxzmdtCYX5Fmo1G5ZErPdixLP4CMgi92ZoYGbEanDPzoiqpQeb+yJim/Z6iOeqJC4+64Yh2UjINDk+w6lMlI4ijnDCmQORevHDzbsvxj6lCOAHzPl5rhxY/ChXGCS/zc+sKWYNBEZwme451Jxf+xIUqNginq8i0nsD+1pyJYbNrf8ppHatZPTrBDEULNlGw2PM7BNj4FNEPACWxIyKI3pUUH5TU9ONMazKa9o8dPf1diffUIiDJiH3ytfZdAR/iHElqmxwZ7uan47jkTSUe+1sDEAovddGoV/rakNvnjiuDn2oA6pikMlS7mjg8c2Yr+OIEyvGK+ks80+FYA4an0OT7kd33/VsokW3KWfyl4STqrhKY7gk21dHIqeCC/k2mwGB4XAKxJyLEoQoFvQBYeXMfF5gOb9ysKupQD90Tt+Cs="
+  webhooks:
+    - secure: "NF9+ZucmmRPULvvTXF68zT1xlT+bZK51wtRgusjlqgyPIofS+DkzZppApa1OzrQnOtYbo3RRZAk5W809SvwasfC4MuBPPrkR0Q/XbTefS7uIaxHlRXSDglBCyiJDOS/pjOaPJekxjRJwBOzHMgkwmtsL6NWpnoXkOFkBzlT0stlfRmVOi2gFqjlpCYX4f2fJaKBrMxIPFhF+KvQs7C4laRI/ZNIramCfxdLXivXjUbJNIkbjKVrhooDSDv/uBGLsSzdt8bfmlAZbZBTIHbFfvXz7Re4uKxdo7dCkN4i1tku7wluGU0WzzeG+GVR8+JqSrJcEGqIVZP6mf1tjb08jCr97D+jQ8ph/GcpzQjaOKuqIgNZLWmOz9jdmCs1hgUDgrPIghxTGhkV+pwzGqIdlEezW82NuNGryq/KbsuQcF6WpxzAw+xydW4auZ0v5JKWSpNkIahL+3eoTZOReaplnezUHvXmdsH2TNvzM/xyUchZP6QuAUugpkrcHXxmCtOPk3iRePoJz8MMXkRzVKdqHS6JBRAD6B6sk5C1JpMgI8JGkcUSbYDRgVbHoXOA7Fxh1jMWPftkzq/2pFK7lNWMFIq5CWNyTvHXGGNjVOIXJEofDhInidCT5uGDckPa3UEVH7wgK/Ug503KHOGj8JsWYWwqTuZ9qAWhiAYoiAPVBTYI="
 
 before_install:
+  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_iv -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
   - echo
   - echo Installing system dependancies
   - echo
@@ -32,7 +32,6 @@ before_script:
   - echo Beginning prep for testing
   - echo
   - echo Decrypting script...
-  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_key -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
 
 script:
   - echo Script
