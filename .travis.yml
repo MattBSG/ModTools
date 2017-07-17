@@ -3,11 +3,11 @@ dist: trusty
 language: python
 notifications:
   webhooks: $WEBHOOKURL
-  	on_success: change
-  	on_failure: change
-  	on_start: always
-  	on_cancel: change
-  	on_error: change
+    on_success: change
+    on_failure: change
+    on_start: always
+    on_cancel: change
+    on_error: change
 
 before_install:
   - echo
