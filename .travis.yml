@@ -2,12 +2,12 @@ sudo: true
 dist: trusty
 language: python
 notifications:
-  webhooks: $WEBHOOKURL
+  webhooks: 
+    urls:
+      - secure: "Jcz8rhDG0p+DoE3XUcNKsnMp+0ont3eS9kF5QIAFvNBTfH11UuyOfuLTpDJYEOkaGnfOZaV4NQ9mv/7wlCTYjHx90q7F1CucyPIoRoxGK0dopwOddusLF+Yl6ngp4Fte+tn8f5eRuah8+CGDIgaH7690++t5TJDrZ8v9G9ZZmloU6u/4zJZl8ZqKhv35EsDMnXjDtkbEqpxqM6FLvU/vqaUAIiXXkpseht5luFupU5+VHHa4jtNPOu2KIG9zFIDVDU9HvLdMBtwyOG1DOYePD4XXR5szyTEiu90PwzySu9Mg7zNXr/88jB9nDvwMNm9WRNRB6G6Qb5OGSmc/EGYQHplaxHXo9adFzB0ZbP/g7UihD6F/h4IXH+Hhrzme1eQ6NnQqYsa8cJL1/k5PhbXfwU2diS7M+sihQhshJNsUf8fP2kjWq5Hij7KFxeSNZ982GGJzz9SpwZSA7FZfgQnvyKWrJnJRVT/nTpYReyarJjrutfGlt23D9TGFcAh86DaXn1YymM5p7tRnm0erInj6fdENMttAn+9gHDUvWI2EjMDuTKp8SGZAx1vxmogXQ8pNg3BgUEj4m6GN5Ibe4Mcxo2bQ0MDYwIccNsx2+PlQl/nZ9Zn1YbFfGJNPftRl8c2GHcLVJ7UsVuU8Wh5T1GjOiCFd5G5wDjRkxWek/Qip2b8="
     on_success: change
-    on_failure: change
-    on_start: always
-    on_cancel: change
-    on_error: change
+    on_failure: always
+    on_start: change
 
 before_install:
   - echo
