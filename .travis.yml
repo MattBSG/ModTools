@@ -5,8 +5,6 @@ notifications:
   webhooks:
     secure: NF9+ZucmmRPULvvTXF68zT1xlT+bZK51wtRgusjlqgyPIofS+DkzZppApa1OzrQnOtYbo3RRZAk5W809SvwasfC4MuBPPrkR0Q/XbTefS7uIaxHlRXSDglBCyiJDOS/pjOaPJekxjRJwBOzHMgkwmtsL6NWpnoXkOFkBzlT0stlfRmVOi2gFqjlpCYX4f2fJaKBrMxIPFhF+KvQs7C4laRI/ZNIramCfxdLXivXjUbJNIkbjKVrhooDSDv/uBGLsSzdt8bfmlAZbZBTIHbFfvXz7Re4uKxdo7dCkN4i1tku7wluGU0WzzeG+GVR8+JqSrJcEGqIVZP6mf1tjb08jCr97D+jQ8ph/GcpzQjaOKuqIgNZLWmOz9jdmCs1hgUDgrPIghxTGhkV+pwzGqIdlEezW82NuNGryq/KbsuQcF6WpxzAw+xydW4auZ0v5JKWSpNkIahL+3eoTZOReaplnezUHvXmdsH2TNvzM/xyUchZP6QuAUugpkrcHXxmCtOPk3iRePoJz8MMXkRzVKdqHS6JBRAD6B6sk5C1JpMgI8JGkcUSbYDRgVbHoXOA7Fxh1jMWPftkzq/2pFK7lNWMFIq5CWNyTvHXGGNjVOIXJEofDhInidCT5uGDckPa3UEVH7wgK/Ug503KHOGj8JsWYWwqTuZ9qAWhiAYoiAPVBTYI=
 before_install:
-- sudo gem install travis
-- travis encrypt-file -r MattBSG/ModTools -p -f -d -K "$configkey" --iv "$configiv" travisbotconfig.sh.enc
 - echo
 - echo Installing system dependancies
 - echo
@@ -15,11 +13,13 @@ before_install:
 - sudo apt-get update
 install:
 - echo
-- echo Installing python dependancies
+- echo Installing python and build dependancies
 - echo
 - mkdir installation-files
 - cd installation-files
-- sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
+- sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev ruby-dev build-essential -y
+- sudo gem install travis
+- travis encrypt-file -r MattBSG/ModTools -p -f -d -K "$configkey" --iv "$configiv" travisbotconfig.sh.enc
 - wget https://bootstrap.pypa.io/get-pip.py
 - sudo python3.5 get-pip.py
 - cd ..
