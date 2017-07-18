@@ -3,38 +3,36 @@ dist: trusty
 language: python
 notifications:
   webhooks:
-    secure: "NF9+ZucmmRPULvvTXF68zT1xlT+bZK51wtRgusjlqgyPIofS+DkzZppApa1OzrQnOtYbo3RRZAk5W809SvwasfC4MuBPPrkR0Q/XbTefS7uIaxHlRXSDglBCyiJDOS/pjOaPJekxjRJwBOzHMgkwmtsL6NWpnoXkOFkBzlT0stlfRmVOi2gFqjlpCYX4f2fJaKBrMxIPFhF+KvQs7C4laRI/ZNIramCfxdLXivXjUbJNIkbjKVrhooDSDv/uBGLsSzdt8bfmlAZbZBTIHbFfvXz7Re4uKxdo7dCkN4i1tku7wluGU0WzzeG+GVR8+JqSrJcEGqIVZP6mf1tjb08jCr97D+jQ8ph/GcpzQjaOKuqIgNZLWmOz9jdmCs1hgUDgrPIghxTGhkV+pwzGqIdlEezW82NuNGryq/KbsuQcF6WpxzAw+xydW4auZ0v5JKWSpNkIahL+3eoTZOReaplnezUHvXmdsH2TNvzM/xyUchZP6QuAUugpkrcHXxmCtOPk3iRePoJz8MMXkRzVKdqHS6JBRAD6B6sk5C1JpMgI8JGkcUSbYDRgVbHoXOA7Fxh1jMWPftkzq/2pFK7lNWMFIq5CWNyTvHXGGNjVOIXJEofDhInidCT5uGDckPa3UEVH7wgK/Ug503KHOGj8JsWYWwqTuZ9qAWhiAYoiAPVBTYI="
-
+    secure: NF9+ZucmmRPULvvTXF68zT1xlT+bZK51wtRgusjlqgyPIofS+DkzZppApa1OzrQnOtYbo3RRZAk5W809SvwasfC4MuBPPrkR0Q/XbTefS7uIaxHlRXSDglBCyiJDOS/pjOaPJekxjRJwBOzHMgkwmtsL6NWpnoXkOFkBzlT0stlfRmVOi2gFqjlpCYX4f2fJaKBrMxIPFhF+KvQs7C4laRI/ZNIramCfxdLXivXjUbJNIkbjKVrhooDSDv/uBGLsSzdt8bfmlAZbZBTIHbFfvXz7Re4uKxdo7dCkN4i1tku7wluGU0WzzeG+GVR8+JqSrJcEGqIVZP6mf1tjb08jCr97D+jQ8ph/GcpzQjaOKuqIgNZLWmOz9jdmCs1hgUDgrPIghxTGhkV+pwzGqIdlEezW82NuNGryq/KbsuQcF6WpxzAw+xydW4auZ0v5JKWSpNkIahL+3eoTZOReaplnezUHvXmdsH2TNvzM/xyUchZP6QuAUugpkrcHXxmCtOPk3iRePoJz8MMXkRzVKdqHS6JBRAD6B6sk5C1JpMgI8JGkcUSbYDRgVbHoXOA7Fxh1jMWPftkzq/2pFK7lNWMFIq5CWNyTvHXGGNjVOIXJEofDhInidCT5uGDckPa3UEVH7wgK/Ug503KHOGj8JsWYWwqTuZ9qAWhiAYoiAPVBTYI=
 before_install:
-  - openssl aes-256-cbc -K $encrypted_4d62e938391b_key -iv $encrypted_4d62e938391b_iv -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
-  - echo
-  - echo Installing system dependancies
-  - echo
-  - sudo add-apt-repository ppa:fkrull/deadsnakes -y
-  - sudo add-apt-repository ppa:mc3man/trusty-media -y
-  - sudo apt-get update
-
+- openssl aes-256-cbc -k "$configpassword" -in travisbotconfig.sh.enc -out travisbotconfig.sh -d
+- echo
+- echo Installing system dependancies
+- echo
+- sudo add-apt-repository ppa:fkrull/deadsnakes -y
+- sudo add-apt-repository ppa:mc3man/trusty-media -y
+- sudo apt-get update
 install:
-  - echo
-  - echo Installing python dependancies
-  - echo
-  - mkdir installation-files
-  - cd installation-files
-  - sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
-  - wget https://bootstrap.pypa.io/get-pip.py
-  - sudo python3.5 get-pip.py
-  - cd ..
-  - sudo python3.5 -m pip install --upgrade -r requirements.txt
-  - rm -rfv installation-files
-
+- echo
+- echo Installing python dependancies
+- echo
+- mkdir installation-files
+- cd installation-files
+- sudo apt-get install git python3.5 python3.5-dev unzip zlib1g-dev libjpeg8-dev -y
+- wget https://bootstrap.pypa.io/get-pip.py
+- sudo python3.5 get-pip.py
+- cd ..
+- sudo python3.5 -m pip install --upgrade -r requirements.txt
+- rm -rfv installation-files
 before_script:
-  - echo
-  - echo Beginning prep for testing
-  - echo
-  - echo Decrypting script...
-
+- echo
+- echo Beginning prep for testing
+- echo
+- echo Decrypting script...
 script:
-  - echo Script
-
+- echo Script
 after_success:
-  - echo SUCCESS (not really)
+- echo SUCCESS (not really)
+env:
+  global:
+    secure: bsg07BR/MmAY9kr1VqbtzujhDT6DehGfwhDg+wdbDlvH9SXHxC8OCuTVrdEVogP3/jwhjIVeXKN1QlQCs2jBS9ADWkeHbrh4CQy7IFFVzV1T3mkA6loY7LE5Q6uM+ERnXpF5STGHj4bUr0434Wv7YKvzIYo1d5Z14kzua6KhSSgCI1alUn3BWs08n5uCMdG0wBbM/jSWGhHdmLpmUNwQVId3UzhKFKbM8167dXu+1Yn2N6fDYrTVFP9LhXvhzvZ5FOx7urY6U65QlQc6rnfMO4nAOAPH4tGtYq0dLxNOxvYOEMmhxsmggxRNEfoqJWPAZQAk0oQkUJuJXfPA7Dbk+ENRj2orvbU5Ll75PZJPVyVnfcul5ZlmiDwcaTHZ1iq7rUxpC770ZBcAteDVr/YWhHey4wlrEVE3QZOU1E++5LaKZhVHX4HyfDXWmZHKtNws9GywuRxG0c+L3+REIR8C7RIv2+/NH4eQwTJJopCuKU6UxGyKYwaqT6Xq1w21PpOkkSPxSc+41N+8NkWf8/Dv5+I9KLYDAyrLFAlZ7f+wJcy96borF/RWv+L4z8QUqQJZ+UYYIIz8Mr/2F/U1w2d6qHeR2DbKAANpekE2UTsD3s0cCKwWzHBWekcrJkwehQ0FeJ4fApKajE2HIoGcxS+REDc92LrgMsZpoabkJIlP4Jw=
