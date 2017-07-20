@@ -2318,6 +2318,8 @@ class AutoMod(discord.Client):
                                    '[!!globalban <id> <reason>] NO FUCKING QUOTES NEEDED BRUH')
             reason = ' '.join(leftover_args)
             serverlist = list(self.servers)
+            print('Global ban has been issued.')
+            Response('One moment please.')
             for server in serverlist:
                 try:
                     await self.http.ban(this_id, server.id, 0)
@@ -2331,7 +2333,7 @@ class AutoMod(discord.Client):
             gban.close()
 #            write_file('config/banonjoin.txt', self.banonjoin)
             print(this_id, 'Has been global banned')
-            return Response(':thumbsup:', reply=True)
+            return Response(':thumbsup: Done.', reply=True)
         return
 
     async def cmd_stats(self, author, channel, server, id=None):
