@@ -2433,7 +2433,7 @@ class AutoMod(discord.Client):
         blahblahblah
         """
         return Response('Here is my OAuth URL!:\n<{}>'
-                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
+                        ''.format(discord.utils.oauth_url(BOT_USER_ACCOUNT, permissions=discord.Permissions.all())),
                         reply=True)
 
     async def cmd_joinserver(self):
@@ -2442,7 +2442,7 @@ class AutoMod(discord.Client):
         Asks the bot to join a server.
         """
         return Response('I am quite happy you would like me to join one of your servers! Just remember that to function properly, I must have **administrator** permissions. Here is my invite link:\n<{}>'
-                        ''.format(discord.utils.oauth_url('237760867968614402', permissions=discord.Permissions.all())),
+                        ''.format(discord.utils.oauth_url(BOT_USER_ACCOUNT, permissions=discord.Permissions.all())),
                         reply=True)
 
     async def on_server_join(self, server):
