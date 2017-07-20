@@ -2306,7 +2306,7 @@ class AutoMod(discord.Client):
                 return Response(':thumbsdown:', reply=True)
         return
 
-    async def cmd_globalban(self, author, this_id, leftover_args):
+    async def cmd_globalban(self, author, channel, this_id, leftover_args):
         """
         Usage: {command_prefix}lurk
         Force the bot to lurk in a server rather than send shit to it or leave
@@ -2318,8 +2318,9 @@ class AutoMod(discord.Client):
                                    '[!!globalban <id> <reason>] NO FUCKING QUOTES NEEDED BRUH')
             reason = ' '.join(leftover_args)
             serverlist = list(self.servers)
-            print('Global ban has been issued.')
-            Response('One moment please.')
+            print('Global ban has been issued for', this_id)
+            await self.safe_send_message(channel, ':tools: One moment please.')
+            failed_tries = 0
             for server in serverlist:
                 try:
                     await self.http.ban(this_id, server.id, 0)
@@ -2327,13 +2328,19 @@ class AutoMod(discord.Client):
                     await asyncio.sleep(1)
                 except:
                     print('cannot ban on %s' % server.name)
+                    failed_tries + 1
             gban = open('config/banonjoin.txt', 'a')
             self.banonjoin = str(self.banonjoin)[5:0] + this_id + '\n'
             gban.write(self.banonjoin)
             gban.close()
 #            write_file('config/banonjoin.txt', self.banonjoin)
-            print(this_id, 'Has been global banned')
-            return Response(':thumbsup: Done.', reply=True)
+            print(this_id, 'has been global banned')
+            if failed_tries > 0:
+                await self.safe_send_message(channel, ':no_entry_sign: User ID `{}` has been global banned, however, I was unable to ban on **{}** servers.'.format(this_id, failed_tries))
+            else:
+                await self.safe_send_message(channel, 'User ID `{}` has been successfully global banned.')
+            return
+            return Response(':thumbsup:', reply=True)
         return
 
     async def cmd_stats(self, author, channel, server, id=None):
