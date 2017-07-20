@@ -2328,7 +2328,7 @@ class AutoMod(discord.Client):
                     await asyncio.sleep(1)
                 except:
                     print('cannot ban on %s' % server.name)
-                    failed_tries + 1
+                    failed_tries = failed_tries + 1
             gban = open('config/banonjoin.txt', 'a')
             self.banonjoin = str(self.banonjoin)[5:0] + this_id + '\n'
             gban.write(self.banonjoin)
