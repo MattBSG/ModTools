@@ -2336,11 +2336,10 @@ class AutoMod(discord.Client):
 #            write_file('config/banonjoin.txt', self.banonjoin)
             print(this_id, 'has been global banned')
             if failed_tries > 0:
-                await self.safe_send_message(channel, ':no_entry_sign: User ID `{}` has been global banned, however, I was unable to ban on **{}** servers.'.format(this_id, failed_tries))
+                await self.safe_send_message(channel, ':no_entry_sign: User ID `{}` has been global banned, however, I was unable to ban on **{}** server(s).'.format(this_id, failed_tries))
             else:
                 await self.safe_send_message(channel, 'User ID `{}` has been successfully global banned.'.format(this_id))
             return
-            return Response(':thumbsup:', reply=True)
         return
 
     async def cmd_stats(self, author, channel, server, id=None):
