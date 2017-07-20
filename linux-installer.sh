@@ -85,7 +85,6 @@ elif [ "$os" = "Debian" ]; then
 	sudo make altinstall
 	cd ..
 	cd ..
-	wget https://cdn.mattbsg.xyz/requirements.txt
 	pip3.5 install --upgrade pip
 	pip3.5 install -U -r requirements.txt
 	pip3.5 install python-Levenshtein
