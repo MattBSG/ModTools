@@ -2338,7 +2338,7 @@ class AutoMod(discord.Client):
             if failed_tries > 0:
                 await self.safe_send_message(channel, ':no_entry_sign: User ID `{}` has been global banned, however, I was unable to ban on **{}** server(s).'.format(this_id, failed_tries))
             else:
-                await self.safe_send_message(channel, 'User ID `{}` has been successfully global banned.'.format(this_id))
+                await self.safe_send_message(channel, ':white_check_mark: User ID `{}` has been successfully global banned.'.format(this_id))
             return
         return
 
