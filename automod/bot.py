@@ -2321,10 +2321,12 @@ class AutoMod(discord.Client):
             print('Global ban has been issued for', this_id)
             await self.safe_send_message(channel, ':tools: One moment please.')
             failed_tries = 0
+            banned_in_servers = 0
             for server in serverlist:
                 try:
                     await self.http.ban(this_id, server.id, 0)
                     await self.do_server_log(banned_id=this_id, server=server, reason=reason, log_flag='autoban')
+                    banned_in_servers = banned_in_servers + 1
                     await asyncio.sleep(1)
                 except:
                     print('cannot ban on %s' % server.name)
@@ -2336,9 +2338,9 @@ class AutoMod(discord.Client):
 #            write_file('config/banonjoin.txt', self.banonjoin)
             print(this_id, 'has been global banned')
             if failed_tries > 0:
-                await self.safe_send_message(channel, ':no_entry_sign: User ID `{}` has been global banned, however, I was unable to ban on **{}** server(s).'.format(this_id, failed_tries))
+                await self.safe_send_message(channel, ':no_entry_sign: User ID `{}` has been global banned, however, I was unable to ban on **{}** server(s) out of **{}** server(s).'.format(this_id, failed_tries, banned_in_servers))
             else:
-                await self.safe_send_message(channel, ':white_check_mark: User ID `{}` has been successfully global banned.'.format(this_id))
+                await self.safe_send_message(channel, ':white_check_mark: User ID `{}` has been successfully global banned in **{}** servers.'.format(this_id, banned_in_servers))
             return
         return
 
