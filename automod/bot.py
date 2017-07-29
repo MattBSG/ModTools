@@ -712,9 +712,20 @@ class AutoMod(discord.Client):
                     return
                 await self.safe_send_message(discord.Object(id=config[9]),
                                              '`[{}]` 🚫 **USER ID** *{}* ** WAS AUTOMATICALLY BANNED FROM THE SERVER DUE TO A GLOBAL BAN'
-                                             '** 🚫\n**REASON:** {} \n\nFor more information about global bans, see <https://github.com/MattBSG/ModTools/wiki/FAQ#global-bans>'.format(datetime.utcnow().strftime("%H:%M:%S"),
+                                             '** 🚫\n**REASON:** __{}__ \n\nFor more information about global bans, see <https://github.com/MattBSG/ModTools/wiki/FAQ#global-bans>'.format(datetime.utcnow().strftime("%H:%M:%S"),
                                                                                 banned_id,
                                                                                 reason),
+                                             server=server)
+            elif log_flag == 'massautoban':
+                if server.id in self.server_index:
+                    config = self.server_index[server.id]
+                else:
+                    return
+                if not self.server_index[server.id][10][1]:
+                    return
+                await self.safe_send_message(discord.Object(id=config[9]),
+                                             '`[{}]` 🚫 **A MASS GLOBAL BAN HAS BEEN ISSUED FOR `{}`**. A seperate message will be logged with each ID for auditing purposes.\n **REASON:** __{}__\n\n'
+                                             'Global bans are used to help remove extremely volitile users from discord such as raiders or DM spamming bots/userbots. Learn more at <https://github.com/MattBSG/ModTools/wiki/FAQ#global-bans>.'.format(datetime.utcnow().strftime("%H:%M:%S"), banned_id, reason),
                                              server=server)
             elif log_flag == 'unban':
                 if server.id in self.server_index:
@@ -2308,9 +2319,8 @@ class AutoMod(discord.Client):
 
     async def cmd_globalban(self, author, channel, this_id, leftover_args):
         """
-        Usage: {command_prefix}lurk
-        Force the bot to lurk in a server rather than send shit to it or leave
-        after the time is up
+        Usage: {command_prefix}globalban
+        Bans a user in every server the bot resides in
         """
         if author.id in [self.config.master_id]:
             if not leftover_args:
@@ -2338,9 +2348,48 @@ class AutoMod(discord.Client):
 #            write_file('config/banonjoin.txt', self.banonjoin)
             print(this_id, 'has been global banned')
             if failed_tries > 0:
-                await self.safe_send_message(channel, ':no_entry_sign: User ID `{}` has been global banned, however, I was unable to ban on **{}** server(s) out of **{}** server(s).'.format(this_id, failed_tries, banned_in_servers))
+                await self.safe_send_message(channel, ':no_entry_sign: User ID `{}` has been global banned, however, I was unable to ban on **{}** servers out of **{}** servers.'.format(this_id, failed_tries, banned_in_servers))
             else:
                 await self.safe_send_message(channel, ':white_check_mark: User ID `{}` has been successfully global banned in **{}** servers.'.format(this_id, banned_in_servers))
+            return
+        return
+
+    async def cmd_massglobalban(self, author, channel, reason, leftover_args):
+        """
+        Usage: {command_prefix}massglobalban
+        Bans a set of user ids in every server the bot resides in.
+        THIS SHOULD BE USED FEW AND FAR BETWEEN, IT CAN DEAL A LOT OF DAMAGE IF MISUSED
+        Remember, with great power comes great responsibilty!
+        """
+        if author.id in [self.config.master_id]:
+            if not leftover_args:
+                raise CommandError('ERROR: No ids\n'
+                                   '!!globalban <id1>, <id2>, <id3>, etc.')
+            serverlist = list(self.servers)
+            print('A mass global ban has been issued')
+            await self.safe_send_message(channel, ':tools: One moment please, this might take quite a while.')
+            failed_tries = 0
+            each_ban = 0
+            banlist = ''.join(leftover_args).split(',')
+            for this_id in banlist:
+                for server in serverlist:
+                    try:
+                        await self.http.ban(this_id, server.id, 0)
+                        await self.do_server_log(banned_id=this_id, server=server, reason=reason, log_flag='massautoban')
+                        await asyncio.sleep(2)
+                    except:
+                        print('cannot ban mass global ban {} on {}'.format(this_id, server.name))
+                        failed_tries = failed_tries + 1
+                    each_ban = each_ban + 1
+                await self.safe_send_message(channel, ':white_check_mark: Carried out global ban on `{}`'.format(this_id))
+                gban = open('config/banonjoin.txt', 'a')
+                self.banonjoin = str(self.banonjoin)[5:0] + this_id + '\n'
+                gban.write(self.banonjoin)
+                gban.close()
+            if failed_tries > 0:
+                await self.safe_send_message(channel, ':no_entry_sign: The mass global ban was carried out with **{}** individual bans, but I was unable to ban in **{}** of those instances.'.format(each_ban, failed_tries))
+            else:
+                await self.safe_send_message(channel, ':ok_hand: Mass global ban complete with **{}** individual bans.'.format(each_ban))
             return
         return
 
