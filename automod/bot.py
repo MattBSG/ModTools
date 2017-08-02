@@ -2903,182 +2903,185 @@ class AutoMod(discord.Client):
                     traceback.print_exc()
             if not flag:
                 await self.do_server_log(message=message)
-        if message.server.id not in self.server_index:
-            return
-        elif message.channel.id in self.server_index[message.server.id][12]:
-            return
-        elif not await self.is_checked(message.author, message.server):
-            if not flag:
-                await self.do_server_log(message=message)
-            return
-        elif await self.is_long_member(message.author.joined_at, message.server):
-            if self.server_index[message.server.id][10][2] is True:
-                for emote in self.emote_list:
-                    if emote in message.clean_content.lower():
-                        await self.safe_delete_message(message)
-                        await self._write_to_modlog('Deleted the message', message.author, message.server,
-                                                    '**twitch emote** `{}` **detected**'.format(emote,
-                                                                                                        message.clean_content[
-                                                                                                        :150]),
-                                                    message.channel)
-                        self.action_dict['twitch_memes_killed'] += 1
-                        self.action_dict['actions_taken'] += 1
-                        return
-            config = self.server_index[message.server.id]
-            if message.author.id in config[11]:
-                this = config[11][message.author.id]
-                now = datetime.utcnow()
-                dis = await self.limit_post(message.author, message.server, message.content, limit_post_flag=flag)
-                if dis > 0:
-                    await self.safe_delete_message(message)
-                    this[3] += 1
-                    self.action_dict['actions_taken'] += 1
-                    action = self.server_index[message.server.id][6]
-                    if this[3] > 5:
-                        if 'kick' in action:
-                            await self._write_to_modlog('Kick', message.author, message.server,
-                                                        'multiple violations of anti spam filters', message.channel)
-                            try:
-                                await self.kick(message.author)
-                                await self.safe_send_message(message.author,
-                                                             'You\'ve been kicked for multiple violations of anti spam filters on `{}`!'.format(
-                                                                     message.server.name))
-                            except:
-                                print('Cannot kick, no permissions : {}'.format(message.server.name))
-                        elif 'ban' in action:
-                            await self._write_to_modlog('Ban', message.author, message.server,
-                                                        'multiple violations of anti spam filters', message.channel)
-                            try:
-                                await self.ban(message.author, 7)
-                                await self.safe_send_message(message.author,
-                                                             'You\'ve been banned for multiple violations of anti spam filters on `{}`!'.format(
-                                                                     message.server.name))
-                            except:
-                                print('Cannot ban, no permissions : {}'.format(message.server.name))
-                        elif 'mute' in action:
-                            await self._write_to_modlog('Mute', message.author, message.server,
-                                                        'multiple violations of anti spam filters', message.channel)
-                            mutedrole = discord.utils.get(message.server.roles, name='Muted')
-                            try:
-                                await self.add_roles(message.author, mutedrole)
-                                await self.server_voice_state(message.author, mute=True)
-                                await self.safe_send_message(message.author,
-                                                             'You\'ve been muted for multiple violations of anti spam filters on `{}`!'.format(
-                                                                     message.server.name))
-                            except:
-                                print('Cannot mute, no permissions : {}'.format(message.server.name))
-                        else:
-                            await self._write_to_modlog('Flagged', message.author, message.server,
-                                                        'multiple violations of anti spam filters', message.channel)
-                        return
-                    if dis is 1:
-                        await self._write_to_modlog('Deleted the message', message.author, message.server,
-                                                    '**duplicate message detected**'.format(
-                                                            message.clean_content[:150]), message.channel)
-                        await self.safe_send_message(message.author,':exclamation: **You are sending duplicate messages.** Please refrain from doing this on {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
-                    elif dis is 2:
-                        await self._write_to_modlog('Deleted the message', message.author, message.server,
-                                                    '**spam-esque duplicate characters detected**'.format(
-                                                            message.clean_content[:150]), message.channel)
-                        await self.safe_send_message(message.author,':exclamation: **You are sending spam like duplicate characters.** Please refrain from doing this on {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
-                    else:
-                        await self._write_to_modlog('Deleted the message', message.author, message.server,
-                                                    '**rate limiting**'.format(message.clean_content[:150]),
-                                                    message.channel)
-                        await self.safe_send_message(message.author,':exclamation: **You are being rate limited.** Please slow your message sends to {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
-                    this[0] = now
-                else:
-                    if not flag:
-                        await self.do_server_log(message=message)
-                this[2].append(do_slugify(message.content))
-                self.server_index[message.server.id][11][message.author.id] = this
-            else:
+        try:
+            if message.server.id not in self.server_index:
+                return
+            elif message.channel.id in self.server_index[message.server.id][12]:
+                return
+            elif not await self.is_checked(message.author, message.server):
                 if not flag:
                     await self.do_server_log(message=message)
-                this = [datetime.utcnow(), config[1] + 2, [message.content], 0]
-                self.server_index[message.server.id][11][message.author.id] = this
-        else:
-            if self.server_index[message.server.id][10][2] is True:
-                for emote in self.emote_list:
-                    if emote in message.clean_content.lower():
+                return
+            elif await self.is_long_member(message.author.joined_at, message.server):
+                if self.server_index[message.server.id][10][2] is True:
+                    for emote in self.emote_list:
+                        if emote in message.clean_content.lower():
+                            await self.safe_delete_message(message)
+                            await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                        '**twitch emote** `{}` **detected**'.format(emote,
+                                                                                                            message.clean_content[
+                                                                                                            :150]),
+                                                        message.channel)
+                            self.action_dict['twitch_memes_killed'] += 1
+                            self.action_dict['actions_taken'] += 1
+                            return
+                config = self.server_index[message.server.id]
+                if message.author.id in config[11]:
+                    this = config[11][message.author.id]
+                    now = datetime.utcnow()
+                    dis = await self.limit_post(message.author, message.server, message.content, limit_post_flag=flag)
+                    if dis > 0:
                         await self.safe_delete_message(message)
-                        await self._write_to_modlog('Deleted the message', message.author, message.server,
-                                                    '**twitch emote** `{}` **detected**'.format(emote,
-                                                                                                      message.clean_content[
-                                                                                                      :150]),
-                                                    message.channel)
-                        self.action_dict['twitch_memes_killed'] += 1
+                        this[3] += 1
                         self.action_dict['actions_taken'] += 1
-                        return
-            config = self.server_index[message.server.id]
-            if message.author.id in config[11]:
-                dis = await self.strict_limit_post(message.author, message.server, message.content, limit_post_flag=flag)
-                if dis > 0:
-                    await self.safe_delete_message(message)
-                    config[11][message.author.id][3] += 1
-                    self.action_dict['actions_taken'] += 1
-                    if config[11][message.author.id][3] > 3:
                         action = self.server_index[message.server.id][6]
-                        if 'kick' in action:
-                            await self._write_to_modlog('Kick', message.author, message.server,
-                                                        'multiple violations of anti spam filters', message.channel)
-                            try:
-                                await self.kick(message.author)
-                                await self.safe_send_message(message.author,
-                                                             'You\'ve been kicked for multiple violations of anti spam filters on `{}`!'.format(
-                                                                     message.server.name))
-                            except:
-                                print('Cannot kick, no permissions : {}'.format(message.server.name))
-                        elif 'ban' in action:
-                            await self._write_to_modlog('Ban', message.author, message.server,
-                                                        'multiple violations of anti spam filters', message.channel)
-                            try:
-                                await self.ban(message.author, 7)
-                                await self.safe_send_message(message.author,
-                                                             'You\'ve been banned for multiple violations of anti spam filters on `{}`!'.format(
-                                                                     message.server.name))
-                            except:
-                                print('Cannot ban, no permissions : {}'.format(message.server.name))
-                        elif 'mute' in action:
-                            await self._write_to_modlog('Mute', message.author, message.server,
-                                                        'multiple violations of anti spam filters', message.channel)
-                            mutedrole = discord.utils.get(message.server.roles, name='Muted')
-                            try:
-                                await self.add_roles(message.author, mutedrole)
-                                await self.server_voice_state(message.author, mute=True)
-                                await self.safe_send_message(message.author,
-                                                             'You\'ve been muted for multiple violations of anti spam filters on `{}`!'.format(
-                                                                     message.server.name))
-                            except:
-                                print('Cannot mute, no permissions : {}'.format(message.server.name))
+                        if this[3] > 5:
+                            if 'kick' in action:
+                                await self._write_to_modlog('Kick', message.author, message.server,
+                                                            'multiple violations of anti spam filters', message.channel)
+                                try:
+                                    await self.kick(message.author)
+                                    await self.safe_send_message(message.author,
+                                                                 'You\'ve been kicked for multiple violations of anti spam filters on `{}`!'.format(
+                                                                         message.server.name))
+                                except:
+                                    print('Cannot kick, no permissions : {}'.format(message.server.name))
+                            elif 'ban' in action:
+                                await self._write_to_modlog('Ban', message.author, message.server,
+                                                            'multiple violations of anti spam filters', message.channel)
+                                try:
+                                    await self.ban(message.author, 7)
+                                    await self.safe_send_message(message.author,
+                                                                 'You\'ve been banned for multiple violations of anti spam filters on `{}`!'.format(
+                                                                         message.server.name))
+                                except:
+                                    print('Cannot ban, no permissions : {}'.format(message.server.name))
+                            elif 'mute' in action:
+                                await self._write_to_modlog('Mute', message.author, message.server,
+                                                            'multiple violations of anti spam filters', message.channel)
+                                mutedrole = discord.utils.get(message.server.roles, name='Muted')
+                                try:
+                                    await self.add_roles(message.author, mutedrole)
+                                    await self.server_voice_state(message.author, mute=True)
+                                    await self.safe_send_message(message.author,
+                                                                 'You\'ve been muted for multiple violations of anti spam filters on `{}`!'.format(
+                                                                         message.server.name))
+                                except:
+                                    print('Cannot mute, no permissions : {}'.format(message.server.name))
+                            else:
+                                await self._write_to_modlog('Flagged', message.author, message.server,
+                                                            'multiple violations of anti spam filters', message.channel)
+                            return
+                        if dis is 1:
+                            await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                        '**duplicate message detected**'.format(
+                                                                message.clean_content[:150]), message.channel)
+                            await self.safe_send_message(message.author,':exclamation: **You are sending duplicate messages.** Please refrain from doing this on {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
+                        elif dis is 2:
+                            await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                        '**spam-esque duplicate characters detected**'.format(
+                                                                message.clean_content[:150]), message.channel)
+                            await self.safe_send_message(message.author,':exclamation: **You are sending spam like duplicate characters.** Please refrain from doing this on {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
                         else:
-                            await self._write_to_modlog('Flagged', message.author, message.server,
-                                                        'multiple violations of anti spam filters', message.channel)
-                        return
-                    if dis is 1:
-                        await self._write_to_modlog('Deleted the message', message.author, message.server,
-                                                    '**duplicate message detected**'.format(
-                                                            message.clean_content[:150]), message.channel)
-                    elif dis is 2:
-                        await self._write_to_modlog('Deleted the message', message.author, message.server,
-                                                    '**spam-esque duplicate characters detected**'.format(
-                                                            message.clean_content[:150]), message.channel)
+                            await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                        '**rate limiting**'.format(message.clean_content[:150]),
+                                                        message.channel)
+                            await self.safe_send_message(message.author,':exclamation: **You are being rate limited.** Please slow your message sends to {} or I may take further action!\n\nAction set by server moderators: __**{}**__'.format(message.server.name, action))
+                        this[0] = now
                     else:
-                        await self._write_to_modlog('Deleted the message', message.author, message.server,
-                                                    '**rate limiting**'.format(message.clean_content[:150]),
-                                                    message.channel)
+                        if not flag:
+                            await self.do_server_log(message=message)
+                    this[2].append(do_slugify(message.content))
+                    self.server_index[message.server.id][11][message.author.id] = this
                 else:
                     if not flag:
                         await self.do_server_log(message=message)
-                this = config[11][message.author.id]
-                this[0] = datetime.utcnow()
-                this[2].append(do_slugify(message.content))
-                self.server_index[message.server.id][11][message.author.id] = this
+                    this = [datetime.utcnow(), config[1] + 2, [message.content], 0]
+                    self.server_index[message.server.id][11][message.author.id] = this
             else:
-                if not flag:
-                    await self.do_server_log(message=message)
-                this = [datetime.utcnow(), config[1], [message.content], 0]
-                self.server_index[message.server.id][11][message.author.id] = this
+                if self.server_index[message.server.id][10][2] is True:
+                    for emote in self.emote_list:
+                        if emote in message.clean_content.lower():
+                            await self.safe_delete_message(message)
+                            await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                        '**twitch emote** `{}` **detected**'.format(emote,
+                                                                                                          message.clean_content[
+                                                                                                          :150]),
+                                                        message.channel)
+                            self.action_dict['twitch_memes_killed'] += 1
+                            self.action_dict['actions_taken'] += 1
+                            return
+                config = self.server_index[message.server.id]
+                if message.author.id in config[11]:
+                    dis = await self.strict_limit_post(message.author, message.server, message.content, limit_post_flag=flag)
+                    if dis > 0:
+                        await self.safe_delete_message(message)
+                        config[11][message.author.id][3] += 1
+                        self.action_dict['actions_taken'] += 1
+                        if config[11][message.author.id][3] > 3:
+                            action = self.server_index[message.server.id][6]
+                            if 'kick' in action:
+                                await self._write_to_modlog('Kick', message.author, message.server,
+                                                            'multiple violations of anti spam filters', message.channel)
+                                try:
+                                    await self.kick(message.author)
+                                    await self.safe_send_message(message.author,
+                                                                 'You\'ve been kicked for multiple violations of anti spam filters on `{}`!'.format(
+                                                                         message.server.name))
+                                except:
+                                    print('Cannot kick, no permissions : {}'.format(message.server.name))
+                            elif 'ban' in action:
+                                await self._write_to_modlog('Ban', message.author, message.server,
+                                                            'multiple violations of anti spam filters', message.channel)
+                                try:
+                                    await self.ban(message.author, 7)
+                                    await self.safe_send_message(message.author,
+                                                                 'You\'ve been banned for multiple violations of anti spam filters on `{}`!'.format(
+                                                                         message.server.name))
+                                except:
+                                    print('Cannot ban, no permissions : {}'.format(message.server.name))
+                            elif 'mute' in action:
+                                await self._write_to_modlog('Mute', message.author, message.server,
+                                                            'multiple violations of anti spam filters', message.channel)
+                                mutedrole = discord.utils.get(message.server.roles, name='Muted')
+                                try:
+                                    await self.add_roles(message.author, mutedrole)
+                                    await self.server_voice_state(message.author, mute=True)
+                                    await self.safe_send_message(message.author,
+                                                                 'You\'ve been muted for multiple violations of anti spam filters on `{}`!'.format(
+                                                                         message.server.name))
+                                except:
+                                    print('Cannot mute, no permissions : {}'.format(message.server.name))
+                            else:
+                                await self._write_to_modlog('Flagged', message.author, message.server,
+                                                            'multiple violations of anti spam filters', message.channel)
+                            return
+                        if dis is 1:
+                            await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                        '**duplicate message detected**'.format(
+                                                                message.clean_content[:150]), message.channel)
+                        elif dis is 2:
+                            await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                        '**spam-esque duplicate characters detected**'.format(
+                                                                message.clean_content[:150]), message.channel)
+                        else:
+                            await self._write_to_modlog('Deleted the message', message.author, message.server,
+                                                        '**rate limiting**'.format(message.clean_content[:150]),
+                                                        message.channel)
+                    else:
+                        if not flag:
+                            await self.do_server_log(message=message)
+                    this = config[11][message.author.id]
+                    this[0] = datetime.utcnow()
+                    this[2].append(do_slugify(message.content))
+                    self.server_index[message.server.id][11][message.author.id] = this
+                else:
+                    if not flag:
+                        await self.do_server_log(message=message)
+                    this = [datetime.utcnow(), config[1], [message.content], 0]
+                    self.server_index[message.server.id][11][message.author.id] = this
+        except AttributeError:
+            print('WTF is going on! Attribute error, prob from a webhook firing')
 
         max_word_length = 0
         for words in self.server_index[message.server.id][5]:
