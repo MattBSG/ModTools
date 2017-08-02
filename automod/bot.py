@@ -266,6 +266,9 @@ class AutoMod(discord.Client):
         self.loop = loop
         try:
             loop.run_until_complete(self.start(self.config.token))
+        except KeyboardInterrupt:
+            print('Keyboard interrupt detected! Please use the shutdown command in the future!')
+            return
         finally:
             try:
                 try:
@@ -285,6 +288,7 @@ class AutoMod(discord.Client):
                 print("Error in cleanup:", e)
 
             loop.close()
+            print('Finished shutdown')
 
     def load_configs(self):
         server_index = {}
