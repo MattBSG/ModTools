@@ -3081,7 +3081,7 @@ class AutoMod(discord.Client):
                     this = [datetime.utcnow(), config[1], [message.content], 0]
                     self.server_index[message.server.id][11][message.author.id] = this
         except AttributeError:
-            print('WTF is going on! Attribute error, prob from a webhook firing')
+            return
 
         max_word_length = 0
         for words in self.server_index[message.server.id][5]:
