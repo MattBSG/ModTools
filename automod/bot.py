@@ -1298,7 +1298,10 @@ class AutoMod(discord.Client):
             if not mentions:
                 raise CommandError('Usage: {command_prefix}ban @UserName ["reason"]\nBans the user(s) from the server, accepts multiple mentions')
             for user in mentions:
-                await self.ban(user, 7)
+                try:
+                    await self.ban(user, 7)
+                except discord.Forbidden:
+                    return Response('I do not have permission to ban this user.', reply=True)
                 self.user_dict[user.id]['actions_taken_against'] += 1
             await self.write_to_modlog(message, author, server, reason)
 
