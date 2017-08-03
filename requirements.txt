@@ -3,3 +3,4 @@ fuzzywuzzy
 aiofiles
 python-slugify
 discord.py==0.16.6
+raven

@@ -96,8 +96,7 @@ cls
 
 echo Got it. "%clientid%" is the client id for your bot account
 echo.
-echo Last but not least go ahead you need to select what you would like
-echo your command prefix to be.
+echo Next go ahead and select what you would like your command prefix to be.
 echo.
 echo AKA in ^^!^^!ping "^!^!" is the prefix and goes before every command
 echo.
@@ -106,6 +105,20 @@ set /p prefix="Command Prefix: "
 cls
 echo Got it. "%prefix%" is the command prefix
 echo.
+
+
+
+echo Last but not least, we need to get your sentry token.
+echo This token allows the bot to report errors online, to you, so 
+echo it is easier to debug any issues that arise.
+echo.
+echo It looks something like this: 
+echo https://dfsdkjfnshekjhnfkjsdfsmsnfjke:djhmsbfweuikfbljhasgvweuyfdgjhds@sentry.io/123456:
+echo.
+echo.
+set /p sentrytoken="Sentry Token: "
+cls
+echo Got it. "%sentrytoken%" is your sentry token
 echo.
 
 echo Writing settings to file...
@@ -120,6 +133,7 @@ echo [Chat]>>"config\options.txt"
 echo CommandPrefix = %prefix%>>"config\options.txt"
 echo.>>"automod\constants.py"
 echo BOT_USER_ACCOUNT = %clientid%>>"automod\constants.py"
+echo SENTRYTOKEN = %sentrytoken%>>"automod\constants.py"
 
 echo Done.
 

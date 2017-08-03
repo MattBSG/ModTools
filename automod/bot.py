@@ -17,6 +17,7 @@ from PIL import Image
 from fuzzywuzzy import fuzz
 from io import BytesIO, StringIO
 from datetime import datetime, timedelta
+from raven import Client
 
 from automod.config import Config
 from automod.register import Register
@@ -28,8 +29,10 @@ from automod.utils import load_json, write_json, load_file, compare_strings, do_
 from .exceptions import CommandError
 from .constants import BOT_HANDLER_ROLE, RHINO_SERVER, RHINO_SERVER_CHANNEL, DOCUMENTATION_FOR_BOT, TWITCH_EMOTES, \
     RHINO_PATREON, BOT_USER_ACCOUNT, SHITTY_BOT_IDS, RHINO_STREAMTIP, BTTV_EMOTES, \
-    OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SHITTY_BAN_LIST
+    OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SHITTY_BAN_LIST, SENTRYTOKEN
 
+sentry = Client(SENTRYTOKEN, auto_log_stacks=True)
+#handler = SentryHandler(client)
 #logger = logging.getLogger('discord')
 #logger.setLevel(logging.DEBUG)
 #handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')

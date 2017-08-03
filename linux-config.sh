@@ -2,7 +2,6 @@
 # https://www.novell.com/support/kb/doc.php?id=7015165
 # https://stackoverflow.com/a/37847838
 export NCURSES_NO_UTF8_ACS=1
-
 dialog --keep-tite --no-mouse --yesno "This file is used to configure AutoMod and the related settings. Do not run this if you have previously configured the options! Would you like to start configuration?" 8 64
 
 # 1 - Cancel pressed. 255 - ESC pressed.
@@ -43,7 +42,7 @@ case $response in
 esac
 ownerid=$(<$OUTPUT)
 
-dialog --keep-tite --no-mouse --inputbox "Last but not least, we need to know what you want to use for the command prefix.\n\nFor example: In !!help, !! is the command prefix.\n\nPlease enter what you would like for your command prefix (!! is the default):" 32 64 2>$OUTPUT
+dialog --keep-tite --no-mouse --inputbox "For the bot to respond to messages, we need to know what you want to use for the command prefix.\n\nFor example: In !!help, !! is the command prefix.\n\nPlease enter what you would like for your command prefix (!! is the default):" 32 64 2>$OUTPUT
 
 response=$?
 case $response in
@@ -52,8 +51,18 @@ case $response in
 esac
 prefix=$(<$OUTPUT)
 
+dialog --keep-tite --no-mouse --inputbox "Last but not least, we need to get your sentry token. This token allows the bot to report errors online, to you, so it is easier to debug any issues that arise.\n\nIt looks something like this: https://dfsdkjfnshekjhnfkjsdfsmsnfjke:djhmsbfweuikfbljhasgvweuyfdgjhds@sentry.io/123456:" 32 64 2>$OUTPUT
+
+response=$?
+case $response in
+   1) exit;;
+   255) exit;;
+esac
+sentrytoken=$(<$OUTPUT)
+
 echo "
-BOT_USER_ACCOUNT = $botid" | cat - >> automod/constants.py
+BOT_USER_ACCOUNT = $botid 
+SENTRYTOKEN = $sentrytoken" | cat - >> automod/constants.py
 echo "[Credentials]
 Token = $bottoken
 
@@ -63,7 +72,7 @@ OwnerID = $ownerid
 [Chat]
 CommandPrefix = $prefix" | cat - >> config/options.txt
 
-dialog --no-mouse --keep-tite --msgbox "Awesome! You finished configuration of the bot. Lets verify that all the information you entered is correct.\n\nHere are the options you set (inside quotation marks):\n\nBot User ID = '$botid'\nBot Token = '$bottoken'\nYour ID = '$ownerid'\nCommand Prefix = '$prefix'\n\nConfiguration complete! If there is any incorrect information, you will need to manually edit it in either automod/constants.py or config/configs.txt\n\nYou can start your bot by running 'python3.5 run.py'\n\nFor more information refer to the wiki." 32 64
+dialog --no-mouse --keep-tite --msgbox "Awesome! You finished configuration of the bot. Lets verify that all the information you entered is correct.\n\nHere are the options you set (inside quotation marks):\n\nBot User ID = '$botid'\nBot Token = '$bottoken'\nYour ID = '$ownerid'\nCommand Prefix = '$prefix'\nSentry Token = '$sentrytoken'\n\nConfiguration complete! If there is any incorrect information, you will need to manually edit it in either automod/constants.py or config/configs.txt\n\nYou can start your bot by running 'python3.5 run.py'\n\nFor more information refer to the wiki." 32 64
 
 # This file will delete it-self since if it is re-run then it will entirely break the config and need to be repaired
 rm linux-config.sh
