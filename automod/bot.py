@@ -11,6 +11,7 @@ import random
 import sys
 import contextlib
 import logging
+import sys
 
 from PIL import Image
 from fuzzywuzzy import fuzz
@@ -28,7 +29,6 @@ from .exceptions import CommandError
 from .constants import BOT_HANDLER_ROLE, RHINO_SERVER, RHINO_SERVER_CHANNEL, DOCUMENTATION_FOR_BOT, TWITCH_EMOTES, \
     RHINO_PATREON, BOT_USER_ACCOUNT, SHITTY_BOT_IDS, RHINO_STREAMTIP, BTTV_EMOTES, \
     OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SHITTY_BAN_LIST
-
 
 #logger = logging.getLogger('discord')
 #logger.setLevel(logging.DEBUG)
@@ -490,11 +490,46 @@ class AutoMod(discord.Client):
     async def check_names(self, name):
         pass
 
+    async def repair_user_conf(self):
+        print('ERROR, USER CHANGES FILE CORRUPTED OR MISSING. Attempting fix....')
+        userchange_repair = open('config/userchanges.json', 'w')
+        userchange_repair.write('{}')
+        userchange_repair.close()
+        try:
+            self.user_dict = await load_json_async('config/userchanges.json')
+        except:
+            print('Repair failed, file is fucked. Overwrite config/userchanges.json with two curley brackets like {} to fix.\n')
+        loop = asyncio.get_event_loop()
+        self.loop = loop
+        try:
+            try:
+                self.loop.run_until_complete(self.logout())
+            except:
+                pass
+            pending = asyncio.Task.all_tasks()
+            gathered = asyncio.gather(*pending)
+            try:
+                gathered.cancel()
+                loop.run_until_complete(gathered)
+                gathered.exception()
+            except:
+                pass
+        except Exception as e:
+            print("Error in cleanup:", e)
+        loop.close()
+        print('Finished shutdown')
+
+
     async def on_ready(self):
         if not self.uber_ready:
             print('start of on_ready!')
             print('parsing userdict')
-            self.user_dict = await load_json_async('config/userchanges.json')
+            try:
+                self.user_dict = await load_json_async('config/userchanges.json')
+            except (json.decoder.JSONDecodeError, TypeError):
+                await self.repair_user_conf()
+
+
             print('finished!')
             await self.dispatch_uber_ready()
             asyncio.ensure_future(self.backup_list())
@@ -515,13 +550,17 @@ class AutoMod(discord.Client):
         print('Starting Member Update')
         member_list = self.get_all_members()
         for member in member_list:
-            if member.id not in self.user_dict:
-                self.user_dict[member.id] = {'names': [member.name],
-                                             'avatar_changes': 0,
-                                             'actions_taken_against': 0,
-                                             'severs_banned_in': 0}
-            elif member.name not in self.user_dict[member.id]['names']:
-                self.user_dict[member.id]['names'].append(member.name)
+            try:
+                if member.id not in self.user_dict:
+                    self.user_dict[member.id] = {'names': [member.name],
+                                                 'avatar_changes': 0,
+                                                 'actions_taken_against': 0,
+                                                 'severs_banned_in': 0}
+                elif member.name not in self.user_dict[member.id]['names']:
+                    self.user_dict[member.id]['names'].append(member.name)
+            except TypeError:
+                await self.repair_user_conf()
+                print('Finished Member Update after repair')
 
         print('Starting Ban Update')
         temp_servers = list(self.servers)
