@@ -42,13 +42,13 @@
 echo Admin elevation successful, installing dependancies
 
 
-pip install aiohttp
-pip install fuzzywuzzy
-pip install aiofiles
-pip install Pillow
-pip install -U discord.py
+pip3 install aiohttp
+pip3 install fuzzywuzzy
+pip3 install aiofiles
+pip3 install Pillow
+pip3 install -U discord.py
 easy_install python-slugify
-pip install python-Levenshtein
+pip3 install python-Levenshtein
 echo.
 echo.
 echo Done! Starting configuration
