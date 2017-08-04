@@ -19,6 +19,7 @@ from io import BytesIO, StringIO
 from datetime import datetime, timedelta
 from raven import Client
 
+from locale import Lang
 from automod.config import Config
 from automod.register import Register
 from automod.response import Response
@@ -40,23 +41,23 @@ sentry = Client(SENTRYTOKEN, auto_log_stacks=True)
 #logger.addHandler(handler)
 
 def strfdelta(tdelta):
-    t = {'days': 'days',
-         'hours': 'hours',
-         'minutes': 'minutes',
-         'seconds': 'seconds'
+    t = {'days': locale.tdays,
+         'hours': locale.thours,
+         'minutes': locale.tminutes,
+         'seconds': locale.tseconds
          }
 
     d = {'days': tdelta.days}
     d['hours'], rem = divmod(tdelta.seconds, 3600)
     d['minutes'], d['seconds'] = divmod(rem, 60)
     if d['days'] is 1:
-        t['days'] = 'day'
+        t['days'] = locale.tday
     if d['hours'] is 1:
-        t['hours'] = 'hour'
+        t['hours'] = locale.thour
     if d['minutes'] is 1:
-        t['minutes'] = 'minute'
+        t['minutes'] = locale.tminute
     if d['seconds'] is 1:
-        t['seconds'] = 'second'
+        t['seconds'] = locale.tsecond
     if d['days'] is 0:
         if d['hours'] is 0:
             if d['minutes'] is 0:
@@ -117,7 +118,7 @@ class AutoMod(discord.Client):
 
         self.writing = False
 
-        print('end of init')
+        print(locale.end_of_init)
 
     async def json_write_handler(self, filename, contents):
         if self.writing:
@@ -140,7 +141,7 @@ class AutoMod(discord.Client):
             try:
                 write_json_norm(savedir, current_config)
             except:
-                print('Server ID: {}\n\nConfig:\n{}'.format(savedir, current_config))
+                print(locale.backup_config_except.format(savedir, current_config))
 
     async def safe_send_message(self, dest, content, *, server=None, tts=False, expire_in=0, also_delete=None,
                                 quiet=False):
