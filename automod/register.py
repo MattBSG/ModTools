@@ -56,8 +56,8 @@ class Register(object):
         self.step = 2
         self.build_empty_config()
         return Response('Please make sure you respond with **ONLY** the information needed. Also, use `!skip` if you don\'t wish to complete a step or '
-                        '`!restart`if you want to start over!\nFor the first step, I\'ll need to know which roles which you\'d like me omit from my '
-                        'filtering\n\t`example input: Moderators, Admin, Trusted`',
+                        '`!restart`if you want to start over!\nI\'ll need to know what  '
+                        'language you\'d like to use for commands and logging. This step can be skipped (defaults to english)!\n\t`example input: en`',
                         pm=True
                         )
 
@@ -92,9 +92,8 @@ class Register(object):
             return await self.restart()
         
         if args and '!skip' not in args:
-            print(args)
-            print(Lang.available_langs)
-            if str(args) in Lang.available_langs and len(args) < 3:
+            args = ''.join(args)
+            if args in Lang.available_langs:
                 self.server_config_build[18] = args
             else:
                 return Response('I didn\'t quite catch that! The input I picked up doesn\'t seem to be correct!\nPlease try again!',
@@ -145,7 +144,7 @@ class Register(object):
             return Response('I didn\'t quite catch that! The input I picked up doesn\'t seem to be correct!\nPlease try again!',
                             pm=True)
         self.step = 5
-        return Response('Okay, got it. Added {} to the list of privileged roles!\n\nNext up is token reset time in seconds'
+        return Response('Okay, got it. Added {} to the list of privileged roles!\n\nNext up is token reset time in seconds. For more info on tokens, see <https://github.com/MattBSG/ModTools/wiki/FAQ#tokens>'
                         '\n\t`example input: 5`'.format(
                             args
                         ),
@@ -236,10 +235,10 @@ class Register(object):
             return Response('I didn\'t quite catch that! The input I picked up doesn\'t seem to be correct!\nPlease try again!',
                             pm=True)
         self.step = 10
-        return Response('Okay, got it. Added {} as the number of hours till a user is considered a long time member!\n\nNext up is the channel you\'d'
-                        'like all my announcements of changes to go to!\nThese will be sent when Rhino needs to communicate with the moderation teams '
+        return Response('Okay, got it. Added {} as the number of hours till a user is considered a long time member!\n\nNext up is the channel you\'d '
+                        'like all my announcements of changes to go to!\nThese will be sent when the bot owner needs to communicate with the moderation teams '
                         'who use the bot about new commands, new features, ect.\nMake sure its sent as the Channel ID which can be found by putting a `\` before the channel tag `ie \#channel_name`'
-                        '\nThis step can be skipped!\n\t`example input: 135866654117724160`'.format(
+                        '\n\t`example input: 135866654117724160`'.format(
                             args[0]
                         ),
                         pm=True
@@ -250,8 +249,6 @@ class Register(object):
             return await self.restart()
         if args and '!skip' not in args:
             self.server_config_build[17] = args[0]
-        elif '!skip' in args:
-            args = 'the default server channel since you decided to skip'
         else:
             return Response('I didn\'t quite catch that! The input I picked up doesn\'t seem to be correct!\nPlease try again!',
                             pm=True)

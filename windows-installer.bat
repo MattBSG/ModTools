@@ -133,7 +133,7 @@ echo [Chat]>>"config\options.txt"
 echo CommandPrefix = %prefix%>>"config\options.txt"
 echo.>>"automod\constants.py"
 echo BOT_USER_ACCOUNT = %clientid%>>"automod\constants.py"
-echo SENTRYTOKEN = %sentrytoken%>>"automod\constants.py"
+echo SENTRYTOKEN = "%sentrytoken%">>"automod\constants.py"
 
 echo Done.
 
