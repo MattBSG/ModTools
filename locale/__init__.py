@@ -1,4 +1,4 @@
-from automod.bot import AutoMod
+#from automod.bot import AutoMod
 class Lang():
     available_langs = ["en", "es"]
     tdays = 'days'
@@ -14,4 +14,4 @@ class Lang():
 
     def lang_control():
     #DO STUFF
-        
+        return

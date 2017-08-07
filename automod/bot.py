@@ -2576,7 +2576,7 @@ class AutoMod(discord.Client):
             if after.name not in self.user_dict[before.id]['names']:
                 self.user_dict[before.id]['names'].append(after.name)
         if before.avatar != after.avatar:
-            # await self.do_server_log(before=before, after=after, log_flag='avatar')
+            await self.do_server_log(before=before, after=after, log_flag='avatar')
             pass
         if before.nick != after.nick:
             await self.do_server_log(before=before, after=after, log_flag='nickname')
@@ -2661,10 +2661,6 @@ class AutoMod(discord.Client):
     async def on_message(self, message, flag=None):
         if message.author.id in [self.user.id, '159985870458322944']:
             return
-
-        if message.channel.id == '209607650768453633':
-            print('pong')
-            await self.send_message(message.channel, 'pong')
 
         if not self.uber_ready: return
 
