@@ -1,0 +1,21 @@
+[language]
+; bot.py
+tdays = days
+tday = day
+thours = hours
+thour = hour
+tminutes = minutes
+tminute = minute
+tseconds = seconds
+tsecond = second
+end_of_init = end of init
+backup_config_except = Server ID: {}\n\nConfig:\n{}
+keyboard_interrupt = Keyboard interrupt detected! Please use the shutdown command in the future!
+
+; utils.py
+
+; register.py
+
+; constants.py
+
+; config.py
