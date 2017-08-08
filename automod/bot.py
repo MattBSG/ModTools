@@ -41,28 +41,28 @@ sentry = Client(SENTRYTOKEN, auto_log_stacks=True)
 #logger.addHandler(handler)
 
 def strfdelta(tdelta):
-    t = {'days': Lang.tdays,
-         'hours': Lang.thours,
-         'minutes': Lang.tminutes,
-         'seconds': Lang.tseconds
+    t = {'days': Lang.bot_lang_control(string="tdays"),
+         'hours': Lang.bot_lang_control(string="thours"),
+         'minutes': Lang.bot_lang_control(string="tminutes"),
+         'seconds': Lang.bot_lang_control(string="tseconds")
          }
 
     d = {'days': tdelta.days}
     d['hours'], rem = divmod(tdelta.seconds, 3600)
     d['minutes'], d['seconds'] = divmod(rem, 60)
     if d['days'] is 1:
-        t['days'] = Lang.tday
+        t['days'] = Lang.bot_lang_control(string="tday")
     if d['hours'] is 1:
-        t['hours'] = Lang.thour
+        t['hours'] = Lang.bot_lang_control(string="thour")
     if d['minutes'] is 1:
-        t['minutes'] = Lang.tminute
+        t['minutes'] = Lang.bot_lang_control(string="tminute")
     if d['seconds'] is 1:
-        t['seconds'] = Lang.tsecond
+        t['seconds'] = Lang.bot_lang_control(string="tsecond")
     if d['days'] is 0:
         if d['hours'] is 0:
             if d['minutes'] is 0:
                 if d['seconds'] is 0:
-                    return 'Eternity'
+                    return Lang.bot_lang_control(string="Eternity")
                 return '{} {}'.format(d['seconds'], t['seconds'], )
             return '{} {} {} {}'.format(d['minutes'], t['minutes'], d['seconds'], t['seconds'], )
         return '{} {} {} {} {} {}'.format(d['hours'], t['hours'], d['minutes'], t['minutes'], d['seconds'],
@@ -84,6 +84,7 @@ class AutoMod(discord.Client):
 
 
         self.server_index = self.load_configs()
+
 
         self.slow_mode_dict = {}
 
@@ -141,7 +142,7 @@ class AutoMod(discord.Client):
             try:
                 write_json_norm(savedir, current_config)
             except:
-                print(Lang.backup_config_except.format(savedir, current_config))
+                print(Lang.bot_lang_control(string="backup_config_except").format(savedir, current_config))
 
     async def safe_send_message(self, dest, content, *, server=None, tts=False, expire_in=0, also_delete=None,
                                 quiet=False):
@@ -271,7 +272,7 @@ class AutoMod(discord.Client):
         try:
             loop.run_until_complete(self.start(self.config.token))
         except KeyboardInterrupt:
-            print('Keyboard interrupt detected! Please use the shutdown command in the future!')
+            print(Lang.bot_lang_control(string="keyboard_interrupt"))
             return
         finally:
             try:
@@ -1047,7 +1048,7 @@ class AutoMod(discord.Client):
                     except:
                         raise CommandError('Unable to mute user defined:\n{}\n'.format(user.name))
                 if time:
-                    # self.server_index[message.server.id][13][message.author.id] = [float(time), datetime.utcnow()]
+                    self.server_index[message.server.id][13][message.author.id] = [float(time), datetime.utcnow()]
                     await asyncio.sleep(float(time))
                     for user in mentions:
                         muteeroles = user.roles
@@ -3183,7 +3184,7 @@ class AutoMod(discord.Client):
                         await self.delete_message(message)
                         await self.add_roles(message.author, mutedrole)
                         await self.server_voice_state(message.author, mute=True)
-                        # self.server_index[message.server.id][13][message.author.id] = [0, None]
+                        self.server_index[message.server.id][13][message.author.id] = [0, None]
                         await self.safe_send_message(message.author,
                                                      'Your message `{}` has been deleted and you\'ve been muted for breaking the word filter on `{}`!'.format(
                                                              message.clean_content, message.server.name))
