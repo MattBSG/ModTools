@@ -1,4 +1,4 @@
-import importlib, configparser, glob, os
+import configparser, glob, os
 
 lang_config = configparser.ConfigParser()
 lang_config.read('config/options.txt')
