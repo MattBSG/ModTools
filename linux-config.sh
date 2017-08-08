@@ -62,7 +62,7 @@ sentrytoken=$(<$OUTPUT)
 
 echo "
 BOT_USER_ACCOUNT = $botid 
-SENTRYTOKEN = $sentrytoken" | cat - >> automod/constants.py
+SENTRYTOKEN = '$sentrytoken'" | cat - >> automod/constants.py
 echo "[Credentials]
 Token = $bottoken
 
