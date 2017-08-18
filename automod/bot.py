@@ -512,12 +512,12 @@ class AutoMod(discord.Client):
         member_list = self.get_all_members()
         for member in member_list:
             if member.id not in self.user_dict:
-                self.user_dict[member.id] = {'names': [member.name],
-                                             'avatar_changes': 0,
+                self.user_dict[member.id] = {'avatar_changes': 0,
                                              'actions_taken_against': 0,
-                                             'severs_banned_in': 0}
-            elif member.name not in self.user_dict[member.id]['names']:
-                self.user_dict[member.id]['names'].append(member.name)
+                                             'servers_banned_in': 0}
+#TODO: fix this when userchanges is encrypted
+#            elif member.name not in self.user_dict[member.id]['names']:
+#                self.user_dict[member.id]['names'].append(member.name)
 
         print('Starting Ban Update')
         temp_servers = list(self.servers)
@@ -1889,23 +1889,25 @@ class AutoMod(discord.Client):
             if not user:
                 raise CommandError('Could not find user info on "%s"' % option)
             await self.user_index_check(user)
-            try:
-                this = sorted(list(self.user_dict[user.id]['names'][-20:]), key=str.lower)
-                new_this = [clean_string(this[0])]
-                for elem in this[1:]:
-                    if len(new_this[-1]) + len(elem) < 61:
-                        new_this[-1] = new_this[-1] + ', ' + clean_string(elem)
-                    else:
-                        new_this.append(elem)
-                names = clean_string('%s' % '\n                '.join(new_this))
-            except Exception as e:
-                raise CommandError('ERROR: Something wrong in name sorting, please alert Rhino about this!')
+#TODO: Encrypt userchanges so this can be used again
+#
+#            try:
+#                this = sorted(list(self.user_dict[user.id]['names'][-20:]), key=str.lower)
+#                new_this = [clean_string(this[0])]
+#                for elem in this[1:]:
+#                    if len(new_this[-1]) + len(elem) < 61:
+#                        new_this[-1] = new_this[-1] + ', ' + clean_string(elem)
+#                    else:
+#                        new_this.append(elem)
+#                names = clean_string('%s' % '\n                '.join(new_this))
+#            except Exception as e:
+#                raise CommandError('ERROR: Something wrong in name sorting, please alert Rhino about this!')
             final_dict = ['​          user: {}#{}'.format(clean_string(user.name), user.discriminator),
-                          '         names: {}'.format(names),
+#                          '         names: {}'.format(names),
                           '            id: {}'.format(user.id),
                           '    created at: {}'.format(snowflake_time(user.id).strftime("%c")),
                           '        joined: {}'.format(join_str),
-                          '     # of bans: {}'.format(self.user_dict[user.id]['severs_banned_in']),
+                          '     # of bans: {}'.format(self.user_dict[user.id]['servers_banned_in']),
                           '   infractions: {}'.format(self.user_dict[user.id]['actions_taken_against']),
                           'shared servers: {}'.format(len([servers for servers in self.servers if discord.utils.get(
                                                            servers.members, id=user.id)])),
@@ -2523,8 +2525,9 @@ class AutoMod(discord.Client):
         await self.user_index_check(before)
         if before.name != after.name:
             await self.do_server_log(before=before, after=after, log_flag='name')
-            if after.name not in self.user_dict[before.id]['names']:
-                self.user_dict[before.id]['names'].append(after.name)
+            # TODO: reenable this when userchanges is encrypted
+            #if after.name not in self.user_dict[before.id]['names']:
+            #    self.user_dict[before.id]['names'].append(after.name)
         if before.avatar != after.avatar:
             # await self.do_server_log(before=before, after=after, log_flag='avatar')
             pass
@@ -2574,7 +2577,7 @@ class AutoMod(discord.Client):
         await self.user_index_check(member)
         self.ban_dict[member.server.id].append(member)
         if member.id in self.user_dict:
-            self.user_dict[member.id]['severs_banned_in'] += 1
+            self.user_dict[member.id]['servers_banned_in'] += 1
         if member.server.id in self.server_index and 'LURK' in self.server_index[member.server.id]:
             return
         await self.do_server_log(self, member=member, log_flag='ban')
@@ -2582,22 +2585,21 @@ class AutoMod(discord.Client):
     async def on_member_unban(self, server, user):
         if not self.uber_ready: return
         if user.id in self.user_dict:
-            self.user_dict[user.id]['severs_banned_in'] -= 1
+            self.user_dict[user.id]['servers_banned_in'] -= 1
         if server.id in self.server_index and 'LURK' in self.server_index[server.id]:
             return
         await self.do_server_log(self, member=user, log_flag='unban', server=server)
 
     async def user_index_check(self, member):
         if member.id not in self.user_dict:
-            self.user_dict[member.id] = {'names': [member.name],
-                                         'avatar_changes': 0,
+            self.user_dict[member.id] = {'avatar_changes': 0,
                                          'actions_taken_against': 0,
-                                         'severs_banned_in': 0}
+                                         'servers_banned_in': 0}
             try:
                 for banlist in self.ban_dict:
                     for user in banlist:
                         if member.id == user.id:
-                            self.user_dict[member.id]['severs_banned_in'] += 1
+                            self.user_dict[member.id]['servers_banned_in'] += 1
             except:
                 pass
 
