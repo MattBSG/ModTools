@@ -29,8 +29,8 @@ from automod.utils import load_json, write_json, load_file, compare_strings, do_
 
 from .exceptions import CommandError
 from .constants import BOT_HANDLER_ROLE, RHINO_SERVER, RHINO_SERVER_CHANNEL, DOCUMENTATION_FOR_BOT, TWITCH_EMOTES, \
-    RHINO_PATREON, BOT_USER_ACCOUNT, SHITTY_BOT_IDS, RHINO_STREAMTIP, BTTV_EMOTES, \
-    OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SHITTY_BAN_LIST, SENTRYTOKEN
+    BOT_USER_ACCOUNT, SHITTY_BOT_IDS, BTTV_EMOTES, \
+    OLD_MEM_SIMILARITY_PCT, NEW_MEM_SIMILARITY_PCT, SENTRYTOKEN
 
 sentry = Client(SENTRYTOKEN, auto_log_stacks=True)
 #handler = SentryHandler(client)
@@ -119,7 +119,7 @@ class AutoMod(discord.Client):
 
         self.writing = False
 
-        print(Lang.end_of_init)
+        print(Lang.bot_lang_control(string="end_of_init"))
 
     async def json_write_handler(self, filename, contents):
         if self.writing:
@@ -158,7 +158,7 @@ class AutoMod(discord.Client):
                 if server.id in self.server_index and dest.id == self.server_index[server.id][8]:
                     self.server_index[server.id][8] = None
                     self.server_index[server.id][10][0] = False
-                    print("The Cunts on %s deleted their Mod Log. Removing..." % server.name)
+                    print(Lang.bot_lang_control(string="deleted_mod_log").format(server.name))
                 elif server.id in self.server_index and dest.id == self.server_index[server.id][9]:
                     self.server_index[server.id][9] = None
                     self.server_index[server.id][10][1] = False
