@@ -506,7 +506,7 @@ class AutoMod(discord.Client):
 
         print('Connected!\n')
         print('Username: ' + self.user.name)
-        print('ID: ' + self.user.id)
+        print('ID: ' + str(self.user.id))
 
         print('Starting Member Update')
         member_list = self.get_all_members()
